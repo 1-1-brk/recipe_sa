@@ -1,0 +1,66 @@
+#  /usr/local/mysql-8.0.20-macos10.15-x86_64/bin/mysqld
+services:
+
+# DATABASE
+  mysqldb:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: recipe_database
+      MYSQL_ROOT_PASSWORD: Terra3927
+      MYSQL_USER: spring
+      MYSQL_PASSWORD: spring
+    ports:
+      - "3306:3306"
+    networks:
+      - back-db
+    healthcheck:
+      test: "/usr/bin/mysql --user=spring --password=spring --execute \"SHOW DATABASES;\""
+      interval: 5s
+      timeout: 2s
+      retries: 100
+#    volumes:
+#      - db_data: /var/lib/mysql
+
+
+# BACKEND
+  # docker build -t recipe_sa_backend_PROBE .
+
+#   docker run -p 8080:8080 --name recipe_sa_backend-2 --net front-back --net back-db -e MYSQL_HOST=mysqldb -e MYSQL_USER=root -e MYSQL_USER=spring -e MYSQL_PASSWORD=spring -e MYSQL_PORT=3306 recipe_sa_backend_probe
+  recipe_sa_backend:
+    build:
+      context: recipe_sa_backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: spring
+      MYSQL_PASSWORD: spring
+#      MYSQL_ROOT_PASSWORD: Terra3927
+      MYSQL_PORT: 3306
+    depends_on:
+      - mysqldb
+    networks:
+      - front-back
+      - back-db
+
+# FRONTEND
+  recipe_sa_frontend:
+#  frontend-rsa-v1:
+    build:
+      context: recipe_sa_frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:3000"
+    depends_on:
+      - recipe_sa_backend
+    networks:
+      - front-back
+
+
+networks:
+  back-db:
+  front-back:
+#volumes:
+#  db_data:
+
