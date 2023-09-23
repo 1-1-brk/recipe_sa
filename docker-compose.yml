@@ -51,16 +51,44 @@ services:
       context: recipe_sa_frontend
       dockerfile: Dockerfile
     ports:
-      - "80:3000"
+      - "3000:3000"
     depends_on:
       - recipe_sa_backend
     networks:
       - front-back
+    volumes:
+      - type: volume
+        source: webdata
+        target: /app/build/  
+#      - webdata: /app/build/
 
+
+# WEBSERVER (NGINX)
+  web-server:
+    image: nginx:alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - type: bind
+        source: ./nginx/conf/
+        target: /etc/nginx/conf.d/
+        read_only: true
+      - type: volume
+        source: webdata
+        target: /usr/share/nginx/html/
+        read_only: true
+
+#      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+#     - webdata:/usr/share/nginx/html/:ro
+#    - ./certbot/www/:/var/www/certbot/:ro
+#    - ./certbot/conf/:/etc/letsencrypt/
 
 networks:
   back-db:
   front-back:
-#volumes:
-#  db_data:
 
+
+volumes:
+#  db_data:
+  webdata:
