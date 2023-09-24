@@ -8,7 +8,7 @@ class RecipeService{
         // return axios.get(`${BASE_URL}/getAll`);
         return request(
           'GET',
-          '/getAll',
+          '/api/getAll',
           {}
         )
         
@@ -20,7 +20,7 @@ class RecipeService{
       try{
         request(
           'POST',
-          '/newRecipe',
+          '/api/newRecipe',
           data
         );
         return true;
@@ -34,7 +34,7 @@ class RecipeService{
       // axios.post(`${BASE_URL}/newRecipe`, data)
       request(
         'DELETE',
-        `/deleteRecipe-${recipeId}`,
+        `/api/deleteRecipe-${recipeId}`,
         {}
       )
     }

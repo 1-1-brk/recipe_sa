@@ -9,7 +9,7 @@ class CategoryService {
         // return axios.get(`${BASE_URL}/categories/all`)
         return request(
             'GET',
-            '/categories/all',
+            '/api/categories/all',
             {
 
             }

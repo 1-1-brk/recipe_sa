@@ -63,7 +63,7 @@ function MyAccount() {
       ).then((response) => {
         const status = response.status
         setAuthToken(response.data.token)
-        dispatch(authActions.login())
+        dispatch(authActions.login()) 
 
         dispatch(authActions.setShowSuccessfulLogin(true))
         dispatch(authActions.setUser(response.data))

@@ -4,7 +4,7 @@ function Body(props) {
 
   return (
     <div className='' style={{padding:30}}>
-      {props.bubu}
+      {props.body}
     </div>
   );
 }

@@ -20,7 +20,7 @@ function App() {
 
       <Header />
       
-      <Body className='body' bubu={
+      <Body className='body' body={
           <Routes>
           
           <Route path='' Component={MainNeLe}></Route>

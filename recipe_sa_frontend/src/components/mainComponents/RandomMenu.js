@@ -53,7 +53,7 @@ function RandomMenu() {
     // console.log('dispatched: ' , commonActions.getBreakfast())
     request(
       'GET',
-      '/getRandomMenu',
+      '/api/getRandomMenu',
       {}
     ).then(
       (response) => {
