@@ -27,6 +27,7 @@ services:
 
 #   docker run -p 8080:8080 --name recipe_sa_backend-2 --net front-back --net back-db -e MYSQL_HOST=mysqldb -e MYSQL_USER=root -e MYSQL_USER=spring -e MYSQL_PASSWORD=spring -e MYSQL_PORT=3306 recipe_sa_backend_probe
   recipe_sa_backend:
+    container_name: backend
     build:
       context: recipe_sa_backend
       dockerfile: Dockerfile
@@ -39,13 +40,15 @@ services:
 #      MYSQL_ROOT_PASSWORD: Terra3927
       MYSQL_PORT: 3306
     depends_on:
-      - mysqldb
+      mysqldb:
+        condition: service_healthy
     networks:
       - front-back
       - back-db
 
 # FRONTEND
   recipe_sa_frontend:
+    container_name: frontend
 #  frontend-rsa-v1:
     build:
       context: recipe_sa_frontend
@@ -56,31 +59,52 @@ services:
       - recipe_sa_backend
     networks:
       - front-back
-    volumes:
-      - type: volume
-        source: webdata
-        target: /app/build/  
-#      - webdata: /app/build/
+    environment:
+      NODE_ENV: production
+      SERVICE_NAME: frontend
+#    volumes:
+#      - webdata:/app/build/
+     #(ПОПРОБОВАТЬ !!!!! КОГДА ФРОНТ это тоже NGINX и остается бежать
+      #а потом через такой volume передает другому nginx отдельному)
+#      - type: volume
+#        source: webdata
+#        target: /app/build/
+
+#      - webdata:/app/build/
 
 
 # WEBSERVER (NGINX)
-  web-server:
-    image: nginx:alpine
+  nginx:
+    container_name: web-server
+#    image: nginx:alpine
+    environment:
+      SERVICE_NAME: web-server
+    build:
+      context: ./recipe_sa_frontend
+      dockerfile: Dockerfile
+    restart: always
     ports:
       - 80:80
       - 443:443
-    volumes:
-      - type: bind
-        source: ./nginx/conf/
-        target: /etc/nginx/conf.d/
-        read_only: true
-      - type: volume
-        source: webdata
-        target: /usr/share/nginx/html/
-        read_only: true
+    networks:
+      - front-back
+    depends_on:
+      - recipe_sa_frontend
+      - recipe_sa_backend
+#    volumes:
+#      - ./nginx/conf:/etc/nginx/conf.d
+#      - webdata:/usr/share/nginx/html
+#      - type: bind
+#        source: ./nginx/conf/
+#        target: /etc/nginx/conf.d/
+#        read_only: true
+#      - type: volume
+#        source: webdata
+#        target: /usr/share/nginx/html/
+#        read_only: true
 
-#      - ./nginx/conf/:/etc/nginx/conf.d/:ro
-#     - webdata:/usr/share/nginx/html/:ro
+#      - ./nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
+#      - webdata:/usr/share/nginx/html/:ro
 #    - ./certbot/www/:/var/www/certbot/:ro
 #    - ./certbot/conf/:/etc/letsencrypt/
 
@@ -89,6 +113,6 @@ networks:
   front-back:
 
 
-volumes:
-#  db_data:
-  webdata:
+# volumes:
+#   db_data:
+#   webdata:

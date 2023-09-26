@@ -17,7 +17,7 @@ export function setAuthToken(token) {
 }
 
 export function setNewHost(url){
-    axios.defaults.baseURL = `http://${url}`
+    axios.defaults.baseURL = `${url}`
 }
 
 
