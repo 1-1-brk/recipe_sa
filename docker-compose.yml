@@ -3,14 +3,18 @@ services:
 
 # DATABASE
   mysqldb:
-    image: mysql:latest
-    environment:
-      MYSQL_DATABASE: recipe_database
-      MYSQL_ROOT_PASSWORD: Terra3927
-      MYSQL_USER: spring
-      MYSQL_PASSWORD: spring
-    ports:
-      - "3306:3306"
+    container_name: mysqldb
+    build: 
+      context: DB
+      dockerfile: Dockerfile
+    # image: mysql:latest
+    # environment:
+    #   MYSQL_DATABASE: recipe_database
+    #   MYSQL_ROOT_PASSWORD: Terra3927
+    #   MYSQL_USER: spring
+    #   MYSQL_PASSWORD: spring
+    # ports:
+    #   - "3306:3306"
     networks:
       - back-db
     healthcheck:
@@ -26,7 +30,7 @@ services:
   # docker build -t recipe_sa_backend_PROBE .
 
 #   docker run -p 8080:8080 --name recipe_sa_backend-2 --net front-back --net back-db -e MYSQL_HOST=mysqldb -e MYSQL_USER=root -e MYSQL_USER=spring -e MYSQL_PASSWORD=spring -e MYSQL_PORT=3306 recipe_sa_backend_probe
-  recipe_sa_backend:
+  backend:
     container_name: backend
     build:
       context: recipe_sa_backend
@@ -47,7 +51,7 @@ services:
       - back-db
 
 # FRONTEND
-  recipe_sa_frontend:
+  frontend:
     container_name: frontend
 #  frontend-rsa-v1:
     build:
@@ -56,7 +60,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - recipe_sa_backend
+      - backend
     networks:
       - front-back
     environment:
@@ -89,8 +93,8 @@ services:
     networks:
       - front-back
     depends_on:
-      - recipe_sa_frontend
-      - recipe_sa_backend
+      - frontend
+      - backend
 #    volumes:
 #      - ./nginx/conf:/etc/nginx/conf.d
 #      - webdata:/usr/share/nginx/html

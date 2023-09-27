@@ -32,13 +32,8 @@ WORKDIR /app
 COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
-RUN npm i \
-    && echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\nnpm i ran successfully\n\n\n\n\n\n\n\n\n\n\n\n\n\n" \
-    || echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\nnpm i failed\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-#EXPOSE 3000
-RUN npm run build \
-    && echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\nnpm run build ran successfully\n\n\n\n\n\n\n\n\n\n\n\n\n\n" \
-    || echo "\n\n\n\n\n\n\n\n\n\n\n\n\n\nnpm run build FAILED\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+RUN npm i #EXPOSE 3000
+RUN npm run build
 
 # CMD ["tail", "-f", "/dev/null"]
 # CMD ["npm", "run", "start"]
