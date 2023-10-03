@@ -5,7 +5,7 @@ import executeLogout from './components/mainComponents/MyAccount'
 // const baseHost = process.env.BASE_HOST || 'localhost'
 // axios.defaults.baseURL =   `http://${baseHost}:8080`
 // axios.defaults.baseURL = 'http://localhost:8080'
-axios.defaults.baseURL = 'http://127.0.0.1:8080'
+axios.defaults.baseURL = 'http://64.226.88.22:8080'
 axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 export function getAuthToken() {

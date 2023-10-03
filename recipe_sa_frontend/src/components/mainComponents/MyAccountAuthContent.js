@@ -27,7 +27,7 @@ import RecipeService from '../../services/RecipeService';
     }, [recipes]);
 
     function updateRecipesList(){
-        const fullUrl = `/myRecipes-user-${user.id}`
+        const fullUrl = `/api/myRecipes-user-${user.id}`
         request(
             'GET',
             fullUrl,
