@@ -8,13 +8,19 @@ import { authActions } from '../../store/auth-Slice'
 import state from '../../store/index'
 
 // function setToken( userToken ){
-//   sessionStorage.setItem('token', JSON.stringify(userToken))
-// }
-
-// function getToken(){
-
-// }
-
+  //   sessionStorage.setItem('token', JSON.stringify(userToken))
+  // }
+  
+  // function getToken(){
+    
+    // }
+export function logout () {
+  window.localStorage.removeItem('auth_token')
+  dispatch(authActions.logout())
+  
+  window.location.reload();
+  setToShow('welcome')
+}
 
 
 function MyAccount() {
@@ -37,13 +43,6 @@ function MyAccount() {
     }
   }, [])
 
-  function logout () {
-    window.localStorage.removeItem('auth_token')
-    dispatch(authActions.logout())
-    
-    window.location.reload();
-    setToShow('welcome')
-  }
 
 
   // if(!token) {
@@ -103,7 +102,7 @@ function MyAccount() {
   
   return (
     <div>
-        <div>WELCOME CONTENT<Buttons login={login} logout={logout}/></div>
+        <div><Buttons login={login} logout={logout}/></div>
 
 
         

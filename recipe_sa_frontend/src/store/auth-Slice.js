@@ -7,6 +7,7 @@ const authSlice = createSlice({
         isLoggedIn : false,
         showSuccessfulLogin: false,
         showLoginFailed: false,
+        showDisplayInvalidTokenDialog: true,
         user : null
     },
     reducers : {
@@ -25,9 +26,12 @@ const authSlice = createSlice({
         setShowLoginFailed(state, action){
             state.showLoginFailed = action.payload
         },
+        setShowDisplayInvalidTokenDialog(state, action){
+            state.showLoginFailed = action.payload
+        },
         setUser(state, action){
             state.user = action.payload;
-            console.log("INSIDE AUTH SLICE GOR A USER PBJECT: ", action.payload)
+            console.log("INSIDE AUTH SLICE GOR A USER OBJECT: ", action.payload)
         }
     }
 

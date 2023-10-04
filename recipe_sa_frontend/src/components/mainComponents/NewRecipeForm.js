@@ -179,9 +179,7 @@ function NewRecipeForm() {
       </form>
     </div>
 
-    : <div>
-      please login finally, because: """isLoggedIn""":{isLoggedIn}
-    </div>}
+    : <h4 className='pleaseLogIn'>Please log in to add new recipes.</h4>}
     </>
   );
 }

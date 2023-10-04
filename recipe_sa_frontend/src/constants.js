@@ -1,7 +1,12 @@
-// export const ALT_IMG = 'websiteImgs/logo192.png';
-// export const BASE_URL = 'http://localhost:8080';
+import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from './store/auth-Slice'
 
-// export let loggedIn = false;
-// export  function toggleLoggedIn(){
-//     return loggedIn === false ? true : false
-// }
+export  function toggleDisplayInvalidTokenDialog() {
+    console.log('toggle Display triggered')
+    // const dispatch = useDispatch();
+
+    // const displayBool = useSelector(state => state.auth.showDisplayInvalidTokenDialog)
+    // dispatch(authActions.setShowDisplayInvalidTokenDialog(false))
+
+}
+export let displayInvalidTokenDialog = 'none'

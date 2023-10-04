@@ -22,8 +22,13 @@ import RecipeService from '../../services/RecipeService';
 
 
     React.useEffect(() => {
-        console.log('executing useEffect inside MyAccAuthContent')
+        console.log('MyAccAuthContent: fetching initial recipes list')
         updateRecipesList()
+    }, []);
+    
+     React.useEffect(() => {
+        console.log('MyAccAuthContent: rerendering recipes list')
+        // updateRecipesList()
     }, [recipes]);
 
     function updateRecipesList(){
@@ -45,13 +50,34 @@ import RecipeService from '../../services/RecipeService';
         )
     }
 
-    const handleRecipeDelete = (event) => {
-        const deleteID = event.target.name
-        console.log('event.target.name: ', deleteID)
-        RecipeService.deleteRecipe(deleteID)
-        updateRecipesList()
-        }
+    // const handleRecipeDelete = (event) => {
+    //     const deleteID = event.target.name
+    //     console.log('event.target.name: ', deleteID)
+    //     RecipeService.deleteRecipe(deleteID)
+    //     setRecipes(recipes.filter(recipe => (recipe.id !== deleteID)))
+    //     // updateRecipesList()
+    // }
     
+    const handleRecipeDelete = async (deleteID) => {
+        // const deleteID = event.target.name;
+        console.log('event.target.name: ', deleteID);
+
+        try {
+            // Delete the recipe in the backend
+            await RecipeService.deleteRecipe(deleteID);
+
+            // const updatedRecipes = recipes.filter(recipe => recipe.id !== deleteID)
+
+            // Update the state by filtering out the deleted recipe
+            setRecipes(() => (recipes.filter(recipe => recipe.id !== deleteID)));
+            // window.location.reload();
+            console.log('State updated:', recipes);
+        } catch (error) {
+            console.error('Error deleting recipe:', error);
+        }
+    };
+
+     
     const recipesList = recipes.map(
         (recipe) => 
         <div class="card " >
@@ -67,8 +93,8 @@ import RecipeService from '../../services/RecipeService';
                             alt={altImg}
                             className="col-4 trash-icon"
                             name={recipe.id}
-                            style = {{height: '48px', width: '52px'}}
-                            onClick={handleRecipeDelete}
+                            style = {{height: '35px', width: '47px'}}
+                            onClick={() => handleRecipeDelete(recipe.id)}
                         />
                     </span>
                     <p className='card-text'>{recipe.instructions}</p>

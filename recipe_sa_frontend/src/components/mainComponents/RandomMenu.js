@@ -8,6 +8,9 @@ function RandomMenu() {
   const [menu, setMenu] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState({});
 
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+
+
   const dispatch = useDispatch();
   const randomMenu = useSelector(state => state.common.randomMenu)
   // const br = useSelector(state => state.common.breakfast)
@@ -36,21 +39,7 @@ function RandomMenu() {
     [menu]
   )
 
-  // function getBreakfast(){
-  //     return menu.filter((recipe) => recipe.category === 'Breakfast')
-  // }
-  // function getLunch(){
-  //     return menu.filter((recipe) => recipe.category === 'Lunch')
-  // }
-  // function getDessert(){
-  //     return menu.filter((recipe) => recipe.category === 'Dessert')
-  // }
-  // function getDinner(){
-  //     return menu.filter((recipe) => recipe.category === 'Dinner')
-  // }
-
   function getRandomMenu(){
-    // console.log('dispatched: ' , commonActions.getBreakfast())
     request(
       'GET',
       '/api/getRandomMenu',
@@ -78,6 +67,8 @@ function createRecToCatMap(recList){
 }
 
   return (
+
+    isLoggedIn ? 
 
     <div>
       <h3>Here you can choose Random Menu for the day</h3>
@@ -143,7 +134,10 @@ function createRecToCatMap(recList){
         </>
         
       }
-    </div>
+      </div>
+      
+      :
+      <h4 className='pleaseLogIn'>Please log in to generate a random menu for the day.</h4>
   )
 }
 

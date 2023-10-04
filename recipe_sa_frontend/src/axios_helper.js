@@ -1,17 +1,16 @@
 import axios from "axios";
-import executeLogout from './components/mainComponents/MyAccount'
+import { useDispatch } from "react-redux";
+import { toggleDisplayInvalidTokenDialog } from "./constants";
 
-
-// const baseHost = process.env.BASE_HOST || 'localhost'
-// axios.defaults.baseURL =   `http://${baseHost}:8080`
-// axios.defaults.baseURL = 'http://localhost:8080'
-axios.defaults.baseURL = 'http://64.226.88.22:8080'
+axios.defaults.baseURL = `http://${process.env.REACT_APP_BASE_URL}:8080`
 axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 export function getAuthToken() {
     console.log('TOKEN: ', window.localStorage.getItem('auth_token'));
+    console.log('baseEnvUrl: ', process.env.REACT_APP_BASE_URL);
     return window.localStorage.getItem('auth_token')
 }
+
 export function setAuthToken(token) {
     return window.localStorage.setItem('auth_token', token)
 }
@@ -20,9 +19,11 @@ export function setNewHost(url){
     axios.defaults.baseURL = `${url}`
 }
 
-
 export function checkIfTokenExpired(){
+    // toggleDisplayInvalidTokenDialog()
     
+
+
     const token = getAuthToken()
     if ((token !== null) && (typeof token !== 'undefined')){
         try {
@@ -38,50 +39,20 @@ export function checkIfTokenExpired(){
             }
         } catch(err) {
             window.localStorage.removeItem('auth_token')
-            alert('Invalid token, please sign in again')
+            const invalidTokenDialogBackground = document.getElementById('invalidTokenDialogBackground');
+            invalidTokenDialogBackground.style.display = 'block';
+            const invalidTokenDialog = document.getElementById('InvalidTokenDialog');
+            invalidTokenDialog.style.display = 'block';
+            // alert('Invalid token, please sign in again')
         }
         
     }
-    //     // const parts = getAuthToken().split('.');
-
-    //     if (parts.length === 3) {
-    //         // Decode the payload (second part)
-    //         const payload = JSON.parse(atob(parts[1]));
-            
-    //             // Check if the payload contains an 'exp' claim
-    //             if (payload.exp) {
-    //             // Get the current timestamp in seconds
-    //             const currentTimestamp = Math.floor(Date.now() / 1000);
-            
-    //             // Compare the 'exp' claim with the current timestamp
-    //             if (payload.exp > currentTimestamp) {
-    //                 console.log('JWT is still valid');
-    //                 return;
-    //             } else {
-    //                 // window.localStorage.removeItem('auth_token')
-    //                 console.log('JWT has expired & was deleted');
-    //                 // return;
-    //             }
-    //             } else {
-    //             console.error('JWT does not contain an expiration claim (exp)');
-    //             }
-    //         }
-    //      else {
-    //         console.error('Invalid JWT token');
-    //     }
-    // }
-
-
-    // console.log('JWT was bad & was deleted');
-
-    // window.localStorage.removeItem('auth_token')
 }
 
 export function getUsernameFromJwt(){
     const parts = getAuthToken().split('.');
     
             if (parts.length === 3) {
-                // Decode the payload (second part)
                 const payload = JSON.parse(atob(parts[1]));
                 try {
                     console.log("payload", payload)
@@ -97,10 +68,7 @@ export const request = (method, url, data) => {
 
     console.log('BASE_URL generated: ', axios.defaults.baseURL)
 
-
     checkIfTokenExpired()
-    
-
 
     let headers = {}
 

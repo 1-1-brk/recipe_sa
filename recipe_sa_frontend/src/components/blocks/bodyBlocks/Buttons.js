@@ -20,7 +20,7 @@ const failedLogin = document.getElementById('failedLogin');
           <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={()=>dispatch(authActions.setShowSuccessfulLogin(false))}></button>
     </div>}
     { showLoginFailed && <div id='failedLogin' className="alert alert-warning alert-dismissible fade show" role="alert">
-          <strong>Login Failed!</strong> TRy again, maybe login or password were incorrect.
+          <strong>Login Failed!</strong> Try again, maybe login or password were incorrect.
           <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={()=>dispatch(authActions.setShowLoginFailed(false))}></button>
     </div>}
     <div className='row col-md-12 text-center' style={{marginTop:30}}>

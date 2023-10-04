@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { ALT_IMG } from '../../constants';
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { setNewHost } from '../../axios_helper';
@@ -11,7 +10,8 @@ function Header() {
     const logoBgColor = loggedIn ? '#baeabe' : '#ff9d9d';
 
     const imageUrl = `${process.env.PUBLIC_URL}websiteImgs/recipe-icon-png-16.jpg.png`;
-    const altImg = `${process.env.PUBLIC_URL+ALT_IMG}`;
+    // const altImg = `${process.env.PUBLIC_URL+ALT_IMG}`;
+    const altImg = `https://media4.giphy.com/media/xTiN0mKP2Am8PuQW0U/source.gif`;
 
     // const [host, setHost] = useState()
 
@@ -24,8 +24,8 @@ function Header() {
         <Link to='/'>
             <img className='headerLogo' src={imageUrl} alt={altImg} />
         </Link>
-        <input type='text' placeholder="set new host" id="newHost"
-        onChange={(e)=>setNewHost(e.target.value)}></input>
+        {/* <input type='text' placeholder="set new host" id="newHost"
+        onChange={(e)=>setNewHost(e.target.value)}></input> */}
       <nav className='site-nav-container'>
         <ul className='site-nav'>
             <li className='list-item'>

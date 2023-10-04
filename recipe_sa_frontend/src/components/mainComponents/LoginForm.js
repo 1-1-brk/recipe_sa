@@ -63,11 +63,11 @@ export default class LoginForm extends React.Component{
             <div className={classNames('tab-pane', 'fade', this.state.active === 'login' ? 'show active' : '')}>
               <form onSubmit={this.onSubmitLogin}>
                 <div className='form-outline mb-4'>
-                  <input type='login' id='loginName' name='username' className='form-control' onChange={this.onChangeHandler}/>
+                  <input placeholder='enter "t"' type='login' id='loginName' name='username' className='form-control' onChange={this.onChangeHandler}/>
                   <label className='form-label' htmlFor='loginName'>Username</label>
                 </div>
                 <div className='form-outline mb-4'>
-                  <input type='password' id='loginPassword' name='password' className='form-control' onChange={this.onChangeHandler}/>
+                  <input placeholder='enter "t"' type='password' id='loginPassword' name='password' className='form-control' onChange={this.onChangeHandler}/>
                   <label className='form-label' htmlFor='loginPassword'>Password</label>
                 </div>
 
