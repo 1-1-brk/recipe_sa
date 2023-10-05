@@ -66,6 +66,7 @@ services:
     environment:
       NODE_ENV: production
       SERVICE_NAME: frontend
+      REACT_APP_BASE_URL: 64.226.88.22
 #    volumes:
 #      - webdata:/app/build/
      #(ПОПРОБОВАТЬ !!!!! КОГДА ФРОНТ это тоже NGINX и остается бежать

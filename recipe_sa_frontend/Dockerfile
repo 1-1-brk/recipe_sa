@@ -33,7 +33,7 @@ COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
 RUN npm i #EXPOSE 3000
-RUN REACT_APP_BASE_URL=64.226.88.22 npm run build
+RUN npm run build
 
 # CMD ["tail", "-f", "/dev/null"]
 # CMD ["npm", "run", "start"]

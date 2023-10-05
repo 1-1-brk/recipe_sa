@@ -13,23 +13,23 @@ import state from '../../store/index'
   
   // function getToken(){
     
-    // }
-export function logout () {
-  window.localStorage.removeItem('auth_token')
-  dispatch(authActions.logout())
-  
-  window.location.reload();
-  setToShow('welcome')
-}
-
+    // 
 
 function MyAccount() {
   const loggedIn = useSelector(state => state.auth.isLoggedIn)
-
   const dispatch = useDispatch();
+  const [toShow, setToShow] = useState('welcome');
+  function logout () {
+    window.localStorage.removeItem('auth_token')
+    dispatch(authActions.logout())
+    window.location.reload();
+    setToShow('welcome')
+  }
+
+  
 
   // const [token, setToken] = useState()
-  const [toShow, setToShow] = useState('welcome')
+  // const [toShow, setToShow] = useState('welcome')
 
   function login() {
     setToShow('login')
