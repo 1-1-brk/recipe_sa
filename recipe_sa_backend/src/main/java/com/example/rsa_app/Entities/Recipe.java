@@ -30,7 +30,7 @@ public class Recipe {
     private String instructions;
 
     @Column(name = "cook_time")
-    private String cook_time;
+    private int cookTime;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -41,12 +41,12 @@ public class Recipe {
     @CreationTimestamp
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created_at;
+    private Date createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updated_at;
+    private Date updatedAt;
 
 //    @Column(name = "user_id", nullable = false)
 //    private int user_id;
@@ -59,11 +59,11 @@ public class Recipe {
 //    public Recipe() {
 //    }
 
-    public Recipe(String name, String instructions, String cook_time, Category category, MyUser user) {
+    public Recipe(String name, String instructions, int cook_time, Category category, MyUser user) {
 //        this.id = id;
         this.name = name;
         this.instructions = instructions;
-        this.cook_time = cook_time;
+        this.cookTime = cook_time;
         this.category = category;
 //        this.created_at = created_at;
 //        this.updated_at = updated_at;
@@ -102,12 +102,12 @@ public class Recipe {
         this.instructions = instructions;
     }
 
-    public String getCook_time() {
-        return cook_time;
+    public int getCookTime() {
+        return cookTime;
     }
 
-    public void setCook_time(String cook_time) {
-        this.cook_time = cook_time;
+    public void setCookTime(int cook_time) {
+        this.cookTime = cook_time;
     }
 
 //    public int getCategory_id() {
@@ -118,20 +118,20 @@ public class Recipe {
 //        this.category_id = category_id;
 //    }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Date created_at) {
+        this.createdAt = created_at;
     }
 
-    public Date getUpdated_at() {
-        return updated_at;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(Date updated_at) {
+        this.updatedAt = updated_at;
     }
 
     public MyUser getUser() {
@@ -149,10 +149,10 @@ public class Recipe {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", instructions='" + instructions + '\'' +
-                ", cook_time='" + cook_time + '\'' +
+                ", cook_time='" + cookTime + '\'' +
 //                ", category_id=" + category_id +
-                ", created_at=" + created_at +
-                ", updated_at=" + updated_at +
+                ", created_at=" + createdAt +
+                ", updated_at=" + updatedAt +
                 ", user_id=" + user.getId() +
                 '}';
     }

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { toggleDisplayInvalidTokenDialog } from "./constants";
 
-axios.defaults.baseURL = `http://${process.env.REACT_APP_BASE_URL}:8080`
+axios.defaults.baseURL = (process.env.NODE_ENV === 'development') ? `http://127.0.0.1:8080` : `http://${process.env.REACT_APP_BASE_URL}:8080`
 axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 export function getAuthToken() {
@@ -22,6 +22,7 @@ export function setNewHost(url){
 export function checkIfTokenExpired(){
     // toggleDisplayInvalidTokenDialog()
     
+    console.log("NODE_ENV: ", process.env.NODE_ENV)
 
 
     const token = getAuthToken()

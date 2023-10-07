@@ -38,11 +38,15 @@ public class MainController {
     }
 
     @GetMapping("/getAll")
-    private List<RecipeDTO> getAll(){
+    private List<RecipeDTO> getAll(
+            @RequestParam(name = "sortBy", required = false) String sortBy
+    ){
 //    private ResponseEntity<List<Recipe>> getAll(){
-        log.info("GET_ALL_RESPONSE_REQUESTED");
-
-        return recipeService.findAll();
+        log.info("GET_ALL_RESPONSE_REQUESTED sortBy: " + sortBy);
+        if(sortBy == null){
+            sortBy = "0";
+        }
+        return recipeService.findAllSortBy(sortBy);
 //        return ResponseEntity.ok(recipeService.findAll());
     }
 
@@ -52,12 +56,14 @@ public class MainController {
     }
 
 
-    @GetMapping("/myRecipes-user-{user_id}")
-    private List<Recipe> getMyRecipes(@PathVariable int user_id){
+    @GetMapping("/myRecipes-user")
+    private List<RecipeDTO> getMyRecipes(
+            @RequestParam(name = "user_id", required = true) int user_id,
+            @RequestParam(name = "sortBy", required = true) String sortBy
+    ){
 //        ПОЗЖЕ ДОБАВИТЬ ПРОВЕРКА + НЕ НАЙДЕНО
         try {
-//            int user_id_int = Integer.parseInt(user_id);
-            return recipeService.findAllByUser_id(user_id);
+            return recipeService.findAllOfUserSortBy(user_id, sortBy);
         } catch (AppException e) {
             return null;
         }
@@ -88,7 +94,7 @@ public class MainController {
 //                .id(0)
                 newRecipe.setName(recipeDTO.getName());
                 newRecipe.setInstructions(recipeDTO.getInstructions());
-                newRecipe.setCook_time(recipeDTO.getCook_time());
+                newRecipe.setCookTime(recipeDTO.getCook_time());
                 newRecipe.setCategory(category);
                 newRecipe.setUser(user);
 //        log.info("RECIPE STRING: "+newRecipe.toString());

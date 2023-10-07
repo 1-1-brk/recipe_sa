@@ -66,79 +66,99 @@ function createRecToCatMap(recList){
   return map
 }
 
-  return (
-
-    isLoggedIn ? 
-
-    <div>
+  return isLoggedIn ? (
+    <div className="card-list-container">
       <h3>Here you can choose Random Menu for the day</h3>
       <button onClick={getRandomMenu}>generate menu suggestion</button>
-      {(selectedMenu !== null) &&
-        
+      {selectedMenu !== null && (
         <>
-        <div>
-          {selectedMenu.breakfast && 
-          (<>
-            <div className="card recipe-card">  
-              <div className="card-body">
-                <h5 className="card-title">breakfast would be: {selectedMenu.breakfast.name}</h5> 
-                <h6 className="card-subtitle mb-2 text-muted">Cook time: {selectedMenu.breakfast.cook_time}</h6>
-                <p className="card-text">{selectedMenu.breakfast.instructions}</p>
-              </div>
-            </div>
-          </>)
-          }
-        </div>
-        <div>
-          {selectedMenu.lunch && 
-          <>
-            <div className="card recipe-card">  
-              {/* <img src="..." class="card-img-top" alt="..."> */}
-              <div className="card-body">
-                <h5 className="card-title">lunch would be: {selectedMenu.lunch.name}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">Cook time: {selectedMenu.lunch.cook_time}</h6>
-                <p className="card-text">{selectedMenu.lunch.instructions}</p>
-              </div>
-            </div>
-          </>
-          }
-        </div>
-        <div>
-          {selectedMenu.dessert && 
-          <>
-            <div className="card recipe-card">  
-              {/* <img src="..." class="card-img-top" alt="..."> */}
-              <div className="card-body">
-              <h5 className="card-title">dessert would be: {selectedMenu.dessert.name}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">Cook time: {selectedMenu.dessert.cook_time}</h6>
-                <p className="card-text">{selectedMenu.dessert.instructions}</p>
-              </div>
-            </div>
-          </>
-          }
-        </div>
-        <div>
-          {selectedMenu.dinner && 
-          <>
-            <div className="card recipe-card">  
-              {/* <img src="..." class="card-img-top" alt="..."> */}
-              <div className="card-body">
-              <h5 className="card-title">dinner would be: {selectedMenu.dinner.name}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">Cook time: {selectedMenu.dinner.cook_time}</h6>
-                <p className="card-text">{selectedMenu.dinner.instructions}</p>
-              </div>
-            </div>
-          </>
-          }
-        </div>
+          <div>
+            {selectedMenu.breakfast && (
+              <>
+                <div className=" recipe-card">
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      breakfast would be: {selectedMenu.breakfast.name}
+                    </h5>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                      Cook time: {selectedMenu.breakfast.cook_time}
+                    </h6>
+                    <p className="card-text">
+                      {selectedMenu.breakfast.instructions}
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div>
+            {selectedMenu.lunch && (
+              <>
+                <div className=" recipe-card">
+                  {/* <img src="..." className="card-img-top" alt="..."> */}
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      lunch would be: {selectedMenu.lunch.name}
+                    </h5>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                      Cook time: {selectedMenu.lunch.cook_time}
+                    </h6>
+                    <p className="card-text">
+                      {selectedMenu.lunch.instructions}
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div>
+            {selectedMenu.dessert && (
+              <>
+                <div className=" recipe-card">
+                  {/* <img src="..." className="card-img-top" alt="..."> */}
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      dessert would be: {selectedMenu.dessert.name}
+                    </h5>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                      Cook time: {selectedMenu.dessert.cook_time}
+                    </h6>
+                    <p className="card-text">
+                      {selectedMenu.dessert.instructions}
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div>
+            {selectedMenu.dinner && (
+              <>
+                <div className=" recipe-card">
+                  {/* <img src="..." className="card-img-top" alt="..."> */}
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      dinner would be: {selectedMenu.dinner.name}
+                    </h5>
+                    <h6 className="card-subtitle mb-2 text-muted">
+                      Cook time: {selectedMenu.dinner.cook_time}
+                    </h6>
+                    <p className="card-text">
+                      {selectedMenu.dinner.instructions}
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </>
-        
-      }
-      </div>
-      
-      :
-      <h4 className='pleaseLogIn'>Please log in to generate a random menu for the day.</h4>
-  )
+      )}
+    </div>
+  ) : (
+    <h4 className="pleaseLogIn">
+      Please log in to generate a random menu for the day.
+    </h4>
+  );
 }
 
 export default RandomMenu

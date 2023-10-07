@@ -7,6 +7,8 @@ const authSlice = createSlice({
         isLoggedIn : false,
         showSuccessfulLogin: false,
         showLoginFailed: false,
+        showSuccessfulRegistration: false,
+        showRegistrationFailed: false,
         showDisplayInvalidTokenDialog: true,
         user : null
     },
@@ -25,6 +27,12 @@ const authSlice = createSlice({
         },
         setShowLoginFailed(state, action){
             state.showLoginFailed = action.payload
+        },
+        setShowSuccessfulRegistration(state, action){
+            state.showSuccessfulRegistration = action.payload
+        },
+        setShowRegistrationFailed(state, action){
+            state.showRegistrationFailed = action.payload
         },
         setShowDisplayInvalidTokenDialog(state, action){
             state.showLoginFailed = action.payload

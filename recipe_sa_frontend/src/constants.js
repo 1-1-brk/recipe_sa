@@ -1,12 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from './store/auth-Slice'
-
-export  function toggleDisplayInvalidTokenDialog() {
-    console.log('toggle Display triggered')
-    // const dispatch = useDispatch();
-
-    // const displayBool = useSelector(state => state.auth.showDisplayInvalidTokenDialog)
-    // dispatch(authActions.setShowDisplayInvalidTokenDialog(false))
-
-}
-export let displayInvalidTokenDialog = 'none'
+export const SORT_OPTIONS = [
+    {name: "DEFAULT", id: 0},
+    {name: "Name (A-Z)", id: 1},
+    {name: "Name (Z-A)", id: 2},
+    {name: "Created_at (NEW-OLD)", id: 3},
+    {name: "Created_at (OLD-NEW)", id: 4},
+    {name: "Updated_at (NEW-OLD)", id: 5},
+    {name: "Updated_at (OLD-NEW)", id: 6},
+    {name: "Cook_time (SHORT-LONG)", id: 7},
+    {name: "Cook_time (LONG-SHORT)", id: 8},
+  ]

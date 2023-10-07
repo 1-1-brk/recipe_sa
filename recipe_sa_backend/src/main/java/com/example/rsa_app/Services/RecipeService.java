@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface RecipeService {
 
-    List<RecipeDTO> findAll();
+    List<RecipeDTO> findAllSortBy(String sortBy);
+
+    List<RecipeDTO> findAllOfUserSortBy(int user_id, String sortBy);
 
     Recipe findById(int lookUpId);
 
@@ -17,7 +19,7 @@ public interface RecipeService {
 
     void deleteById(int id);
 
-    List<Recipe> findAllByUser_id(int user_id);
+    List<RecipeDTO> getAllRecipesOfUser(int user_id);
 
     RecipeDTO getRandomByCategory(String category);
 }

@@ -14,6 +14,6 @@ public class NewRecipeDTO {
     private String name;
     private String instructions;
     private String category;
-    private String cook_time;
+    private int cook_time;
     private String username; //who created
 }

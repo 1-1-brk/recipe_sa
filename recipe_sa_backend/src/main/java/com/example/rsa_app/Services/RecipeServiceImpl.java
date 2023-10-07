@@ -4,7 +4,10 @@ import com.example.rsa_app.DTOs.RecipeDTO;
 import com.example.rsa_app.Entities.Recipe;
 import com.example.rsa_app.Repositories.RecipeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +17,13 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
+@Slf4j
+@Repository
 public class RecipeServiceImpl implements RecipeService {
 
 //    private EmployeeDAO employeeDAO;
     private RecipeRepository recipeRepository;
+    private EntityManager entityManager;
     private CategoryService categoryService;
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -27,13 +33,19 @@ public class RecipeServiceImpl implements RecipeService {
 //    }
 
     @Autowired
-    public RecipeServiceImpl(RecipeRepository theEmpRepo, CategoryService theCatServ){
+    public RecipeServiceImpl(RecipeRepository theEmpRepo, EntityManager theEm, CategoryService theCatServ){
         recipeRepository = theEmpRepo;
+        entityManager = theEm;
         categoryService = theCatServ;
     }
 
-    public List<Recipe> findAllByUser_id(int user_id){
-        return recipeRepository.findAllByUser_id(user_id);
+    public List<RecipeDTO> getAllRecipesOfUser(int user_id){
+        List<Recipe> recipesAll = recipeRepository.findAllByUser_id(user_id);
+        List<RecipeDTO> recipeDTOList = new ArrayList<>();
+        for (Recipe recipe : recipesAll){
+            recipeDTOList.add(RecipeDTO.recipeToRecipeDTO(recipe));
+        }
+        return recipeDTOList;
     }
 
     @Override
@@ -42,35 +54,105 @@ public class RecipeServiceImpl implements RecipeService {
         if (!recipes.isEmpty()){
             int randInd = new Random().nextInt(recipes.size());
             Recipe recipe = recipes.get(randInd);
-            RecipeDTO recipeDTO = RecipeDTO.builder()
-                    .id(recipe.getId())
-                    .name(recipe.getName())
-                    .category(recipe.getCategory().getName())
-                    .cook_time(recipe.getCook_time())
-                    .instructions(recipe.getInstructions())
-                    .created_at(recipe.getCreated_at())
-                    .username(recipe.getUser().getUsername())
-                    .build();
-            return recipeDTO;
+            return RecipeDTO.recipeToRecipeDTO(recipe);
         }
         return null;
     }
 
     @Override
-    public List<RecipeDTO> findAll() {
+    public List<RecipeDTO> findAllSortBy(String sortBy) {
         List<RecipeDTO> recipeDTOList = new ArrayList<>();
-        List <Recipe> recipesAll= recipeRepository.findAll();
+        List <Recipe> recipesAll; // = new ArrayList<>(); //recipeRepository.findAll();
+        log.info("\n\n\nSortOption: " + sortBy);
+        switch(sortBy) {
+            case "0":
+                recipesAll = recipeRepository.findAll();
+                break;
+            case "1":
+//                entityManager.clear();
+//                TypedQuery<Recipe> query =
+//                        entityManager.createQuery("select r FROM Recipe r ORDER BY r.name ASC", Recipe.class);
+//                recipesAll = query.getResultList();
+//                Sort nameAsc = Sort.by(Sort.Direction.ASC, "name");
+//                recipesAll = recipeRepository.findAll(nameAsc);
+                recipesAll = recipeRepository.findAllByOrderByNameAsc();
+                break;
+            case "2":
+                recipesAll = recipeRepository.findAllByOrderByNameDesc();
+                break;
+            case "3":
+                recipesAll = recipeRepository.findAllByOrderByCreatedAtAsc();
+                break;
+            case "4":
+                recipesAll = recipeRepository.findAllByOrderByCreatedAtDesc();
+                break;
+            case "5":
+                recipesAll = recipeRepository.findAllByOrderByUpdatedAtAsc();
+                break;
+            case "6":
+                recipesAll = recipeRepository.findAllByOrderByUpdatedAtDesc();
+                break;
+            case "7":
+                recipesAll = recipeRepository.findAllByOrderByCookTimeAsc();
+                break;
+            case "8":
+                recipesAll = recipeRepository.findAllByOrderByCookTimeDesc();
+                break;
+            default:
+              throw new IllegalArgumentException("Invalid sortBy value: " + sortBy);
+        }
+
         for (Recipe recipe : recipesAll){
-            RecipeDTO recipeDTO = RecipeDTO.builder()
-                    .id(recipe.getId())
-                    .name(recipe.getName())
-                    .category(recipe.getCategory().getName())
-                    .cook_time(recipe.getCook_time())
-                    .instructions(recipe.getInstructions())
-                    .created_at(recipe.getCreated_at())
-                    .username(recipe.getUser().getUsername())
-                    .build();
-            recipeDTOList.add(recipeDTO);
+            recipeDTOList.add(RecipeDTO.recipeToRecipeDTO(recipe));
+        }
+        return recipeDTOList;
+    }
+
+    @Override
+    public List<RecipeDTO> findAllOfUserSortBy(int user_id, String sortBy) {
+        List<RecipeDTO> recipeDTOList = new ArrayList<>();
+        List <Recipe> recipesAll; // = new ArrayList<>(); //recipeRepository.findAll();
+        log.info("\n\n\nSortOption: " + sortBy);
+        switch(sortBy) {
+            case "0":
+                recipesAll = recipeRepository.findAllByUser_id(user_id);
+                break;
+            case "1":
+//                entityManager.clear();
+//                TypedQuery<Recipe> query =
+//                        entityManager.createQuery("select r FROM Recipe r ORDER BY r.name ASC", Recipe.class);
+//                recipesAll = query.getResultList();
+//                Sort nameAsc = Sort.by(Sort.Direction.ASC, "name");
+//                recipesAll = recipeRepository.findAll(nameAsc);
+                recipesAll = recipeRepository.findAllByUser_IdOrderByNameAsc(user_id);
+                break;
+            case "2":
+                recipesAll = recipeRepository.findAllByUser_IdOrderByNameDesc(user_id);
+                break;
+            case "3":
+                recipesAll = recipeRepository.findAllByUser_IdOrderByCreatedAtAsc(user_id);
+                break;
+            case "4":
+                recipesAll = recipeRepository.findAllByUser_IdOrderByCreatedAtDesc(user_id);
+                break;
+            case "5":
+                recipesAll = recipeRepository.findAllByUser_IdOrderByUpdatedAtAsc(user_id);
+                break;
+            case "6":
+                recipesAll = recipeRepository.findAllByUser_IdOrderByUpdatedAtDesc(user_id);
+                break;
+            case "7":
+                recipesAll = recipeRepository.findAllByUser_IdOrderByCookTimeAsc(user_id);
+                break;
+            case "8":
+                recipesAll = recipeRepository.findAllByUser_IdOrderByCookTimeDesc(user_id);
+                break;
+            default:
+              throw new IllegalArgumentException("Invalid sortBy value: " + sortBy);
+        }
+
+        for (Recipe recipe : recipesAll){
+            recipeDTOList.add(RecipeDTO.recipeToRecipeDTO(recipe));
         }
         return recipeDTOList;
     }
@@ -83,7 +165,7 @@ public class RecipeServiceImpl implements RecipeService {
             toReturn = res.get();
         }
         else {
-            throw new RuntimeException("Employee not found - " + lookUpId);
+            throw new RuntimeException("Recipe not found - " + lookUpId);
         }
         return toReturn;
     }

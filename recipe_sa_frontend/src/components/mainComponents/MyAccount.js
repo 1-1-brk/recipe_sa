@@ -54,7 +54,7 @@ function MyAccount() {
     e.preventDefault();
     request(
       'POST',
-      'x-login',
+      '/x-login',
       {
         username: username,
         password: password
@@ -69,7 +69,7 @@ function MyAccount() {
 
         setToShow('recipes')
     }).catch((error) => {
-      console.log('GOT 401 RESPONSE')
+      console.log('GOT 401 RESPONSE by login')
       dispatch(authActions.setShowLoginFailed(true))
       setToShow('welcome')
     })
@@ -88,13 +88,17 @@ function MyAccount() {
       }
     ).then((response) => {
 
+      dispatch(authActions.setShowSuccessfulRegistration(true))
+      dispatch(authActions.setUser(response.data))
+      // if (response.status === 201) {}
+      setAuthToken(response.data.token)
+      setToShow('recipes')
+    }
 
-      if(response.status === 201){
-        setToShow('recipes')
-        setAuthToken(response.data.token)}
 
-
-    }).catch((error) => {
+    ).catch((error) => {
+      console.log('GOT 401 RESPONSE by registration')
+      dispatch(authActions.setShowRegistrationFailed(true))
       setToShow('welcome')
     })
   }
@@ -103,10 +107,6 @@ function MyAccount() {
   return (
     <div>
         <div><Buttons login={login} logout={logout}/></div>
-
-
-        
-
 
         {!loggedIn && <LoginForm onLogin={onLogin} onRegister={onRegister}/> }
         {loggedIn && <MyAccountAuthContent />}

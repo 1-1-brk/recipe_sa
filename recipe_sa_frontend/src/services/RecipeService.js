@@ -1,45 +1,30 @@
-import { request } from '../axios_helper';
+import { request } from "../axios_helper";
 
-// const BASE_URL = 'http://localhost:8080'
+class RecipeService {
+  getAllRecipesOfUser(sortOption, userId) {
+    // const fullUrl = `/api/myRecipes-user-${userId}`
+    const fullUrl = `/api/myRecipes-user?user_id=${userId}&sortBy=${sortOption}`;
+    return request("GET", fullUrl, {});
+  }
 
-class RecipeService{
+  getAllRecipes(selectedSortOption) {
+    return request("GET", `/api/getAll?sortBy=${selectedSortOption}`, {});
+  }
 
-    getAllRecipes() {
-        // return axios.get(`${BASE_URL}/getAll`);
-        return request(
-          'GET',
-          '/api/getAll',
-          {}
-        )
-        
-      }
-
-    postNewRecipe(data){
-      console.log('POST new recipe REQUEST: '+ data)
-      // axios.post(`${BASE_URL}/newRecipe`, data)
-      try{
-        request(
-          'POST',
-          '/api/newRecipe',
-          data
-        );
-        return true;
-      } catch (err){
-        return false
-      }
+  postNewRecipe(data) {
+    console.log("POST new recipe REQUEST: " + data);
+    try {
+      request("POST", "/api/newRecipe", data);
+      return true;
+    } catch (err) {
+      return false;
     }
+  }
 
-    deleteRecipe(recipeId){
-      console.log('DELETE REQUEST: '+ recipeId)
-      // axios.post(`${BASE_URL}/newRecipe`, data)
-      request(
-        'DELETE',
-        `/api/deleteRecipe-${recipeId}`,
-        {}
-      )
-    }
-
-       
+  deleteRecipe(recipeId) {
+    console.log("DELETE REQUEST: " + recipeId);
+    request("DELETE", `/api/deleteRecipe-${recipeId}`, {});
+  }
 }
 
 export default new RecipeService();

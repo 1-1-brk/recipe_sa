@@ -27,9 +27,15 @@ export default class LoginForm extends React.Component{
   onSubmitLogin = (e) => {
     this.state.onLogin(
       e,
-      this.state.username, 
+      this.state.username,
       this.state.password
-    )
+    );
+    this.setState({
+      username: '',
+      password: '',
+      email: '',
+    });
+    
   }
 
   onSumbitRegister = (e) => {
@@ -38,7 +44,13 @@ export default class LoginForm extends React.Component{
       this.state.username,
       this.state.password,
       this.state.email
-    )
+    );
+    this.setState({
+      username: '',
+      password: '',
+      email: '', 
+    });
+    
   }
 
 
@@ -49,7 +61,7 @@ export default class LoginForm extends React.Component{
     return (
       <div className = 'row justify-content-center'>
         <div className = 'col-4'>
-          <ul className='nav nav-pills nav-justified mb-3' id='ex1' rol='tablist'>
+          <ul style={{border: "solid 2px black", borderRadius: "8px"}} className='nav nav-pills nav-justified mb-3' id='ex1' rol='tablist'>
           
           <li className='nav-item' role='presentation'>
             <button className={classNames('nav-link', this.state.active === 'login' ? 'active' : '')} id='tab-login' onClick={() => this.setState({active : 'login'})}>Login</button>

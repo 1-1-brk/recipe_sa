@@ -5,9 +5,9 @@ import Footer from './components/mainComponents/Footer';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import MainNeLe from './components/mainComponents/MainNeLe';
 import MyAccount from './components/mainComponents/MyAccount';
-import RecipeList from './components/mainComponents/RecipesList';
-import NewRecipeForm from './components/mainComponents/NewRecipeForm';
+import RecipeForm from './components/mainComponents/RecipeForm';
 import RandomMenu from './components/mainComponents/RandomMenu';
+import PublicRecipeList from './components/mainComponents/PublicRecipeList';
 
 // window.onload = () => {
 //   window.localStorage.removeItem('auth_token')
@@ -25,9 +25,9 @@ function App() {
           
           <Route path='' Component={MainNeLe}></Route>
           <Route path='/MyAccount' Component={MyAccount}></Route>
-          <Route path='/getAll' Component={RecipeList}></Route>
+          <Route path='/getAll' Component={PublicRecipeList}></Route>
           <Route path='/randomMenu' Component={RandomMenu}></Route>
-          <Route path='/addRecipe' Component={NewRecipeForm}></Route>
+          <Route path='/addRecipe' Component={RecipeForm}></Route>
 
         </Routes>
       }/>

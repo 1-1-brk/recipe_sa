@@ -10,6 +10,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import {persistor} from './store/index'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+document.title = 'Recipes'
 root.render(
   <React.StrictMode>
 
