@@ -5,7 +5,7 @@ import Footer from './components/mainComponents/Footer';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import MainNeLe from './components/mainComponents/MainNeLe';
 import MyAccount from './components/mainComponents/MyAccount';
-import RecipeForm from './components/mainComponents/RecipeForm';
+import NewRecipeForm from './components/mainComponents/NewRecipeForm';
 import RandomMenu from './components/mainComponents/RandomMenu';
 import PublicRecipeList from './components/mainComponents/PublicRecipeList';
 
@@ -27,7 +27,7 @@ function App() {
           <Route path='/MyAccount' Component={MyAccount}></Route>
           <Route path='/getAll' Component={PublicRecipeList}></Route>
           <Route path='/randomMenu' Component={RandomMenu}></Route>
-          <Route path='/addRecipe' Component={RecipeForm}></Route>
+          <Route path='/addRecipe' Component={NewRecipeForm}></Route>
 
         </Routes>
       }/>

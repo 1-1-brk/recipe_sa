@@ -172,9 +172,10 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Transactional
     @Override
-    public Recipe save(Recipe theRec) {
+    public RecipeDTO save(Recipe theRec) {
+//    public RecipeDTO save(Recipe theRec) {
 //        int catecategoryService.findByName(theRec.getName());
-        return recipeRepository.save(theRec);
+        return RecipeDTO.recipeToRecipeDTO(recipeRepository.save(theRec));
     }
 
     @Transactional

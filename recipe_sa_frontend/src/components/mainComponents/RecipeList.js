@@ -1,8 +1,12 @@
 import React from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+// import { Dispatch } from "redux";
+import { commonActions } from "../../store/common-Slice";
 import { SORT_OPTIONS } from "../../constants";
 import RecipeService from "../../services/RecipeService";
+import ChangeRecipeDialog from "../blocks/bodyBlocks/ChangeRecipeDialog";
 import SortBy from "../blocks/bodyBlocks/SortBy";
+import UpdateRecipeForm from "./UpdateRecipeForm";
 
 // export default
 class RecipeList extends React.Component {
@@ -18,6 +22,8 @@ class RecipeList extends React.Component {
     this.state = {
       recipes: [],
       sortOptionSelected: "0",
+      recipeToUpdate: null,
+      showUpdateDialog: false,
     };
   }
 
@@ -36,7 +42,7 @@ class RecipeList extends React.Component {
         );
       }
       this.setState({ recipes: response.data });
-      console.log("this.recipes: ", this.recipes);
+      console.log("this.recipes: ", this.state.recipes);
     } catch (error) {
       console.error(error);
     }
@@ -47,12 +53,9 @@ class RecipeList extends React.Component {
 
     this.fetchRecipes(this.state.sortOptionSelected);
   }
-
   componentDidUpdate(prevProps, prevState) {
-    // Compare the previous and current values of yourVariable
-    if (this.state.recipes !== prevState.recipes) {
-      // Do something when yourVariable changes
-      console.log("yourVariable has changed:", this.state.yourVariable);
+    if (this.state !== prevState) {
+      console.log("rerendering RecipeList");
       this.forceUpdate();
     }
   }
@@ -88,11 +91,53 @@ class RecipeList extends React.Component {
         (recipe) => recipe.id !== deleteID
       );
       this.setState({ recipes: newRecipes }, () => {
-        console.log("State updated:", this.state.recipes);
+        // console.log("State updated:", this.state.recipes);
       });
     } catch (error) {
       console.error("Error deleting recipe:", error);
     }
+  };
+
+  showRecipeUpdateDialog(recipeId) {
+    // const recipe = this.state.recipes.filter(
+    //   (recipe) => recipe.id === recipeId
+    // );
+    const index = this.state.recipes.findIndex((recipe) => recipe.id === recipeId);
+    const recipe = this.state.recipes[index];
+    this.props.setRecipeToUpdate(recipe);
+    this.setState({ recipeToUpdate: recipe }, () => {
+      const changeRecipeDialog = document.getElementById("ChangeRecipeDialog");
+      changeRecipeDialog.style.display = "block";
+      console.log("(RecipeList) found the recipeToUpdate ", this.state.recipeToUpdate);
+    });
+  }
+
+  handleRecipeUpdate(updatedRecipe){
+    console.log("RecipeList updatedRecipe from UpdateRecipeForm: ", updatedRecipe)
+    this.setState({ recipeToUpdate: updatedRecipe });
+    RecipeService.putExistingRecipe(updatedRecipe)
+    const { recipes } = this.state;
+    const updatedRecipeId = updatedRecipe.id;
+
+    // Clone the recipes array to avoid modifying the state directly
+    const updatedRecipes = [...recipes];
+
+    // Find the index of the recipe with the matching ID
+    const index = updatedRecipes.findIndex(
+      (recipe) => recipe.id === updatedRecipeId
+    );
+
+    if (index !== -1) {
+      // Replace the old recipe with the updated recipe
+      updatedRecipes[index] = updatedRecipe;
+
+      // Update the state with the new array of recipes
+      this.setState({ recipes: updatedRecipes });
+    }
+    const changeRecipeDialog = document.getElementById("ChangeRecipeDialog");
+    changeRecipeDialog.style.display = "none";
+    this.props.setRecipeToUpdate((prevState) => null);
+
   };
 
   formatTimeStamp(tS) {
@@ -101,10 +146,12 @@ class RecipeList extends React.Component {
   }
 
   render() {
-    console.log("RENDERING this.recipes: ", this.state.recipes);
+    // console.log(
+    //   "RecipeList RENDERING this.state.recipeToUpdate: ",
+    //   this.state.recipeToUpdate
+    // );
     const { USER, LOGGED_IN } = this.props;
-    console.log("RECIPE LIST USER: ", USER);
-    console.log("RECIPE LIST LOGGED_IN: ", LOGGED_IN);
+
 
     return (
       <>
@@ -114,76 +161,84 @@ class RecipeList extends React.Component {
           handleChange={this.handleSelectedSortOptionChange}
         />
 
+        {this.state.recipeToUpdate !== null && (
+          <ChangeRecipeDialog
+            // props={changeRecipeDialogProps}
+            handleRecipeSave={this.handleRecipeUpdate}
+            recipe={this.state.recipeToUpdate}
+          />
+        )}
+
         <div>
           {this.state.recipes.map((recipe) => (
             <>
-            <div className="recipe-card row" key={recipe.id}>
-              <div className="row ">
-                <div
-                  className="col-4 justify-content-center display-content-center"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <img
-                    className="img-fluid rounded-start"
-                    src={this.dishPlaceholder}
-                    alt=""
-                    style={{ height: "150px", width: "150px" }}
-                  />
-                </div>
-                <div
-                  className="col-4 justify-content-center display-content-center"
-                  key={recipe.id}
-                >
-                  <span className="card-body col">
-                    <h4 className="card-title col">{recipe.name}</h4>
-                  </span>
-                  <p className="card-text">{recipe.instructions}</p>
-                  <p className="card-text">
-                    Cook Time: {recipe.cook_time} minutes
-                  </p>
-                  <p className="card-text">
-                    <small className="text-muted">
-                      created by {recipe.username} on{" "}
-                      {this.formatTimeStamp(recipe.created_at)}
-                    </small>
-                  </p>
-                  {recipe.updatedAt !== recipe.createdAt && (
+              <div className="recipe-card row" key={recipe.id}>
+                <div className="row ">
+                  <div
+                    className="col justify-content-center display-content-center"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <img
+                      className="img-fluid rounded-start"
+                      src={this.dishPlaceholder}
+                      alt=""
+                      style={{ height: "150px", width: "150px" }}
+                    />
+                  </div>
+                  <div
+                    className="col justify-content-center display-content-center"
+                    key={recipe.id}
+                  >
+                    <span className="card-body col">
+                      <h4 className="card-title col">{recipe.name}</h4>
+                    </span>
+                    <p className="card-text">{recipe.instructions}</p>
+                    <p className="card-text">
+                      Cook Time: {recipe.cook_time} minutes
+                    </p>
                     <p className="card-text">
                       <small className="text-muted">
-                        updated on {this.formatTimeStamp(recipe.updated_at)}
+                        created by {recipe.username} on{" "}
+                        {this.formatTimeStamp(recipe.created_at)}
                       </small>
                     </p>
-                  )}
-                </div>
-            </div>
-                <div className="col-1" style={{}}>
-                  {this.props.use === "private" && (
-                    <>
-                      <img
-                        src={this.TRASH_ICON}
-                        alt={this.ALT_ICON}
-                        className="col-4 tinyIcon-animation"
-                        name={recipe.id}
-                        style={{ height: "35px", width: "45px" }}
-                        onClick={() => this.handleRecipeDelete(recipe.id)}
-                      />
-                      <img
-                        src={this.WRITE_ICON}
-                        alt={this.ALT_ICON}
-                        className="col-4 tinyIcon-animation"
-                        name={recipe.id}
-                        style={{ height: "35px", width: "45px" }}
-                        // onClick={() => this.handleRecipeDelete(recipe.id)}
-                      />
-                    </>
-                  )}
+                    {(recipe.updated_at !== recipe.created_at) && (
+                      <p className="card-text">
+                        <small className="text-muted">
+                          edited on {this.formatTimeStamp(recipe.updated_at)}
+                        </small>
+                      </p>
+                    )}
+                  </div>
+                  <div className="col-1" style={{}}>
+                    {this.props.use === "private" && (
+                      <>
+                        <img
+                          src={this.TRASH_ICON}
+                          alt={this.ALT_ICON}
+                          className="col-4 tinyIcon tinyIcon-animation"
+                          name={recipe.id}
+                          style={{ height: "35px", width: "45px" }}
+                          onClick={() => this.handleRecipeDelete(recipe.id)}
+                        />
+                        <img
+                          src={this.WRITE_ICON}
+                          alt={this.ALT_ICON}
+                          className="col-4 tinyIcon tinyIcon-animation"
+                          name={recipe.id}
+                          style={{ height: "35px", width: "45px" }}
+                          onClick={() => this.showRecipeUpdateDialog(recipe.id)}
+                        />
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-                  </>
+            </>
           ))}
         </div>
       </>
@@ -194,6 +249,12 @@ class RecipeList extends React.Component {
 const mapStateToProps = (state) => ({
   USER: state.auth.user,
   LOGGED_IN: state.auth.isLoggedIn,
+  recipeToUpdate: state.common.recipeToUpdate,
 });
 
-export default connect(mapStateToProps)(RecipeList);
+const mapDispatchToProps = (dispatch) => ({
+  setRecipeToUpdate: (recipe) =>
+    dispatch(commonActions.setRecipeToUpdate(recipe)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeList);

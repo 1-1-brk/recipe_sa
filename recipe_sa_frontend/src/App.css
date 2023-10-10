@@ -32,7 +32,7 @@ body {
 
   align-items: center;
   justify-content: space-between;
-  background-color: #bc6c25;
+  background-color: #bc6b2573;
 
   font-size: 25px;
   font-weight: bold;
@@ -390,7 +390,14 @@ body {
 .tinyIcon {
   height: 35px;
   width: 43px;
-  padding: 5px;
+  margin: 20px;
+}
+
+.alert {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 25%;
+  margin-right: 25%;
 }
 
 .tinyIcon-animation {
@@ -423,6 +430,7 @@ button, select {
   border: solid 2px black;
   padding: 0.375em 1.125em; /* Corrected the padding values */
   /* margin-left: 500px; */
+  margin: 5%;
   font-size: 1rem;
 }
 
@@ -443,7 +451,7 @@ button:focus {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(171, 153, 153);
+  background-color: rgba(171, 153, 153, 0.284);
   /* opacity: 70%; */
   display: none;
   /* position: relative; */
@@ -463,6 +471,23 @@ button:focus {
   background-color: white;
   padding: 20px;
   display: none;
+}
+
+#ChangeRecipeDialog {
+  position: fixed; /* Fixed position to keep it in view even when scrolling */
+  top: 0;
+  left: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Higher z-index to appear on top of other elements */
+}
+
+textarea{
+  height: auto;
 }
 
 .pleaseLogIn {

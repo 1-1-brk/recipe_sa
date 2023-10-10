@@ -4,50 +4,55 @@ import RecipeService from "../../services/RecipeService";
 import { useSelector } from "react-redux";
 import { getUsernameFromJwt } from "../../axios_helper";
 
-export default function RecipeForm(props) {
+export default function UpdateRecipeForm(props) {
   // const { recipe } = props;
 
   const SAVE_ICON = `${process.env.PUBLIC_URL}websiteImgs/SaveIcon.png`;
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
-  const recipeToUpdate = useSelector((state) => state.common.recipeToUpdate);
-  console.log("recipeToUpdate: ", recipeToUpdate);
+  const reduxRecipeToUpdate = useSelector(
+    (state) => state.common.recipeToUpdate
+  );
+  // console.log("\n\n\nreduxRecipeToUpdate: ", reduxRecipeToUpdate, "\n\n\n");
 
   const [categories, setCategories] = useState([]);
+  const [recipeToUpdateProps, setRecipeToUpdateProps] = useState(null);
 
   const [recipeName, setRecipeName] = useState();
   // providedRecipe.name
   // props.recipe && props.recipe.name !== undefined ? props.recipe.name :
   // ""
+  // reduxRecipeToUpdate.name
   // props.recipe.name
 
   // const [recipeToUpdate, setRecipeToUpdate] = useState();
-  const [recipeInstructions, setRecipeInstructions] = useState(
-    // props && props.recipe && props.recipe.instructions !== undefined
-    //   ? props.recipe.instructions
-    //   :
-    ""
-  );
-  const [selectedCategory, setSelectedCategory] = useState(
-    // props && props.recipe && props.recipe.category !== undefined
-    //   ? props.recipe.category
-    //   :
-    ""
-  );
-  const [recipeCookTime, setRecipeCookTime] = useState(
-    // props && props.recipe && props.recipe.cook_time !== undefined
-    //   ? props.recipe.cook_time
-    //   :
-    ""
-  );
+  const [recipeInstructions, setRecipeInstructions] = useState();
+  // props && props.recipe && props.recipe.instructions !== undefined
+  //   ? props.recipe.instructions
+  //   :
+  // ""
+  // reduxRecipeToUpdate.instructions
+  // props.recipe.instructions
+  const [selectedCategory, setSelectedCategory] = useState();
+  // props && props.recipe && props.recipe.category !== undefined
+  //   ? props.recipe.category
+  //   :
+  // ""
+  // reduxRecipeToUpdate.category
+  const [recipeCookTime, setRecipeCookTime] = useState();
+  // props && props.recipe && props.recipe.cook_time !== undefined
+  //   ? props.recipe.cook_time
+  //   :
+  // ""
+  // reduxRecipeToUpdate.cook_time
   const [categoryToIdMap, setCategoryToIdMap] = useState({});
 
   const [showMsg, setShowMsg] = useState({});
 
   let providedRecipe =
-    props.use === "updateRecipe" && props.recipe ? props.recipe : "";
-  console.log("providedRecipe: ", providedRecipe);
+    props.use === "updateRecipe" && props.recipe !== null ? props.recipe : "";
+  // console.log("\n\n\nprovidedRecipe: ", providedRecipe, "\n\n\n");
 
   // if (providedRecipe!=="") {
   //     setRecipeToUpdate(
@@ -59,29 +64,39 @@ export default function RecipeForm(props) {
   // }
 
   useEffect(() => {
-    console.log("\n\n\nRECIPE FORM RENDERED INIT\n\n\n");
-    setRecipeName((prevState) => providedRecipe);
+    // console.log("\n\n\nRECIPE FORM RENDERED INIT\n\n\n");
+    // setRecipeName((prevState) => providedRecipe);
     fetchCategories();
   }, []);
 
-  // useEffect(() => {
-  //   // const rec = getRecipe();
-  //   // const { recipe } = props
-  //   console.log("useEffect ran because of props: ", providedRecipe);
-  //   setRecipeName((prevState) => providedRecipe.name);
-  //   // setRecipeInstructions(props.recipe.instructions);
-  //   // setSelectedCategory(props.recipe.category);
-  //   // setRecipeCookTime(props.recipe.cook_time);
-  // }, [props]);
-
   useEffect(() => {
-    if (props.use === "updateRecipe" && recipeToUpdate) {
-      setRecipeName(recipeToUpdate.name);
-      // setRecipeInstructions(providedRecipe.instructions || "");
-      // setSelectedCategory(providedRecipe.category || "");
-      // setRecipeCookTime(providedRecipe.cook_time || "");
-    }
+    // const rec = getRecipe();
+    // const { recipe } = props
+    // console.log("useEffect ran because of props: ", providedRecipe);
+    if (props && props.recipe !== null && recipeToUpdateProps === null){
+    setRecipeName((prevState) => props.recipe.name);
+    setRecipeInstructions(props.recipe.instructions);
+    setSelectedCategory(props.recipe.category);
+    setRecipeCookTime(props.recipe.cook_time);
+    setRecipeToUpdateProps(props.recipe);}
   }, [props]);
+
+  // useEffect(() => {
+  //   console.log("useEffect ran because of props: ", providedRecipe);
+  //   if (props.use === "updateRecipe" && props.recipe && recipeToUpdate === {}) {
+  //     console.log(
+  //       'props.use === "updateRecipe" && props.recipe && recipeToUpdate === {} CONDITION MATCHED'
+  //     );
+  //     setRecipeToUpdate((prevState) => props.recipe)
+  //   }
+  //   if (props.use === "updateRecipe" && recipeToUpdate) {
+  //     setRecipeName(recipeToUpdate.name);
+  //     // setRecipeInstructions(providedRecipe.instructions || "");
+  //     // setSelectedCategory(providedRecipe.category || "");
+  //     // setRecipeCookTime(providedRecipe.cook_time || "");
+  //   }
+
+  // }, [props]);
 
   const fetchCategories = async () => {
     try {
@@ -89,14 +104,15 @@ export default function RecipeForm(props) {
       setCategories(response.data);
 
       setCategoryToIdMap(categoryToIdMap);
-      console.log("right after fetching categories", categoryToIdMap);
+      // console.log("right after fetching categories", categoryToIdMap);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    console.log("UPDATE_RECIPE_FORM inside handle submit");
+    // event.preventDefault();
     const dataToSend = {
       name: recipeName,
       instructions: recipeInstructions,
@@ -104,29 +120,47 @@ export default function RecipeForm(props) {
       cook_time: recipeCookTime,
       username: getUsernameFromJwt(),
     };
-    if (props.use === "updateRecipe") {
-      props.handleRecipeSave();
-      const success = RecipeService.putExistingRecipe(dataToSend);
-      if (success) {
-        setShowMsg("success");
-        // window.location.reload()
-      } else {
-        setShowMsg("false");
-      }
-    } else {
-      const success = RecipeService.postNewRecipe(dataToSend);
-      if (success) {
-        setShowMsg("success");
-        // window.location.reload()
-      } else {
-        setShowMsg("false");
-      }
 
-      console.log("Submitted:", dataToSend);
+    console.log("UPDATE_RECIPE_FORM Submitted: ", dataToSend);
+
+    if (props.use === "updateRecipe") {
+      const updatedDataToSend = {...dataToSend, id: recipeToUpdateProps.id}
+      // const success = RecipeService.putExistingRecipe(dataToSend)
+      //   props.handleRecipeSave();
+      // if (success) {
+      //   setShowMsg("success");
+      //   // window.location.reload()
+      // } else {
+      //   setShowMsg("false");
+      // }
+      try {
+      await RecipeService.putExistingRecipe(updatedDataToSend);
+      props.handleRecipeSave(updatedDataToSend);
+      setShowMsg("success");
+    } catch (error) {
+      console.error("Error updating recipe:", error);
+      setShowMsg("failed");
+    }
+    } else {
+      // const success = RecipeService.postNewRecipe(dataToSend);
+      // if (success) {
+      //   setShowMsg("success");
+      //   // window.location.reload()
+      // } else {
+      //   setShowMsg("false");
+      // }
+      try {
+      await RecipeService.postNewRecipe(dataToSend);
+      setShowMsg("success");
+    } catch (error) {
+      console.error("Error saving a new recipe:", error);
+      setShowMsg("failed");
+    }
+  // }
     }
   };
 
-  console.log("RecipeForm re-rendered");
+  console.log("RecipeForm re-rendered recipeToUpdate name: ", recipeName);
 
   return (
     <>
@@ -174,7 +208,8 @@ export default function RecipeForm(props) {
             onSubmit={
               props && props.handleRecipeSave !== undefined
                 ? props.handleRecipeSave
-                : handleSubmit
+                : console.log("CLICKED ON SUBMIT FORM")
+                // () => handleSubmit()
             }
           >
             <div>
@@ -217,6 +252,7 @@ export default function RecipeForm(props) {
               </div>
             </div>
             <div className="form-floating">
+              {/* {recipeNameInput} */}
               <input
                 className="form-control"
                 placeholder="Leave a comment here"
@@ -249,7 +285,11 @@ export default function RecipeForm(props) {
                 className="form-control"
                 placeholder="Leave a comment here"
                 id="recInst"
-                value={recipeInstructions}
+                value={
+                  // JSON.stringify(reduxRecipeToUpdate)
+                  recipeInstructions
+                  // reduxRecipeToUpdate.instructions
+                }
                 onChange={(e) => setRecipeInstructions(e.target.value)}
                 maxLength="400"
                 required
@@ -292,7 +332,7 @@ export default function RecipeForm(props) {
             required
           />
         </div> */}
-            <button type="submit">
+            <button type="submit" onClick={handleSubmit}>
               Submit Recipe
               <img className="tinyIcon" src={SAVE_ICON} alt="" />
             </button>

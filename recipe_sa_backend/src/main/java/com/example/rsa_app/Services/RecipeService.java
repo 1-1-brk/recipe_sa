@@ -15,7 +15,7 @@ public interface RecipeService {
 
     void saveAll(List<Recipe> recipeList);
 
-    Recipe save(Recipe theEmp);
+    RecipeDTO save(Recipe theEmp);
 
     void deleteById(int id);
 

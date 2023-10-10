@@ -21,6 +21,16 @@ class RecipeService {
     }
   }
 
+  putExistingRecipe(data) {
+    console.log('put existing recipe request', data)
+    try {
+      request("PUT", "/api/updateRecipe", data);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
   deleteRecipe(recipeId) {
     console.log("DELETE REQUEST: " + recipeId);
     request("DELETE", `/api/deleteRecipe-${recipeId}`, {});

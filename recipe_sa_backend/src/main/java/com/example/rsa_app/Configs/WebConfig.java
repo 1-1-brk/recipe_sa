@@ -20,13 +20,13 @@ import java.util.Arrays;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private RequestsLogging requestLoggingInterceptor;
+//    @Autowired
+//    private RequestsLogging requestLoggingInterceptor;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(requestLoggingInterceptor);
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(requestLoggingInterceptor);
+//    }
 
     @Bean
     public FilterRegistrationBean corsFilter(){

@@ -6,8 +6,8 @@ axios.defaults.baseURL = (process.env.NODE_ENV === 'development') ? `http://127.
 axios.defaults.headers.post["Content-Type"] = 'application/json'
 
 export function getAuthToken() {
-    console.log('TOKEN: ', window.localStorage.getItem('auth_token'));
-    console.log('baseEnvUrl: ', process.env.REACT_APP_BASE_URL);
+    // console.log('TOKEN: ', window.localStorage.getItem('auth_token'));
+    // console.log('baseEnvUrl: ', process.env.REACT_APP_BASE_URL);
     return window.localStorage.getItem('auth_token')
 }
 
@@ -22,7 +22,7 @@ export function setNewHost(url){
 export function checkIfTokenExpired(){
     // toggleDisplayInvalidTokenDialog()
     
-    console.log("NODE_ENV: ", process.env.NODE_ENV)
+    // console.log("NODE_ENV: ", process.env.NODE_ENV)
 
 
     const token = getAuthToken()
@@ -32,7 +32,7 @@ export function checkIfTokenExpired(){
             const payload = JSON.parse(atob(parts[1]));
             const currentTimestamp = Math.floor(Date.now() / 1000);
             if (payload.exp > currentTimestamp) {
-                console.log('JWT is still valid');
+                // console.log('JWT is still valid');
                 return;
             }
             else{
@@ -56,7 +56,7 @@ export function getUsernameFromJwt(){
             if (parts.length === 3) {
                 const payload = JSON.parse(atob(parts[1]));
                 try {
-                    console.log("payload", payload)
+                    // console.log("payload", payload)
                     return payload.iss
                 } catch (error) {
                     throw error;
@@ -67,7 +67,7 @@ export function getUsernameFromJwt(){
 
 export const request = (method, url, data) => {
 
-    console.log('BASE_URL generated: ', axios.defaults.baseURL)
+    // console.log('BASE_URL generated: ', axios.defaults.baseURL)
 
     checkIfTokenExpired()
 

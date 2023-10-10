@@ -2,6 +2,7 @@ package com.example.rsa_app.Controllers;
 
 import com.example.rsa_app.DTOs.NewRecipeDTO;
 import com.example.rsa_app.DTOs.RecipeDTO;
+import com.example.rsa_app.DTOs.UpdateRecipeDTO;
 import com.example.rsa_app.Entities.Category;
 import com.example.rsa_app.Entities.MyUser;
 import com.example.rsa_app.Entities.Recipe;
@@ -87,24 +88,32 @@ public class MainController {
     }
 
     @PostMapping("/newRecipe")
-    public Recipe addRecipe (@RequestBody NewRecipeDTO recipeDTO) throws IOException {
+    public RecipeDTO addRecipe (@RequestBody NewRecipeDTO recipeDTO) throws IOException {
         Category category = categoryService.findByName(recipeDTO.getCategory());
         MyUser user = userService.findUserByUsername(recipeDTO.getUsername());
-        Recipe newRecipe = new Recipe();
+        Recipe newRecipe = Recipe.builder()
 //                .id(0)
-                newRecipe.setName(recipeDTO.getName());
-                newRecipe.setInstructions(recipeDTO.getInstructions());
-                newRecipe.setCookTime(recipeDTO.getCook_time());
-                newRecipe.setCategory(category);
-                newRecipe.setUser(user);
+                .name(recipeDTO.getName())
+                .instructions(recipeDTO.getInstructions())
+                .cookTime(recipeDTO.getCook_time())
+                .category(category)
+                .user(user)
+                .build();
 //        log.info("RECIPE STRING: "+newRecipe.toString());
-        Recipe dbRecipe = recipeService.save(newRecipe);
+        RecipeDTO dbRecipe = recipeService.save(newRecipe);
         return dbRecipe;
     }
 
     @PutMapping("/updateRecipe")
-    public Recipe updateRecipe (@RequestBody Recipe theRec){
-        Recipe dbRecipe = recipeService.save(theRec);
+    public RecipeDTO updateRecipe (@RequestBody UpdateRecipeDTO recipeDTO){
+        log.info("\n\n\nupdating recipe. received object: " + recipeDTO + "\n\n\n");
+        Category category = categoryService.findByName(recipeDTO.getCategory());
+        Recipe recipeToUpdate = recipeService.findById(recipeDTO.getId());
+        recipeToUpdate.setName(recipeDTO.getName());
+        recipeToUpdate.setInstructions(recipeDTO.getInstructions());
+        recipeToUpdate.setCookTime(recipeDTO.getCook_time());
+        recipeToUpdate.setCategory(category);
+        RecipeDTO dbRecipe = recipeService.save(recipeToUpdate);
         return dbRecipe;
     }
 
