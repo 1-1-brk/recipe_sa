@@ -56,7 +56,7 @@ export default function AlertDialog() {
             token.
           </div>
           <div className="dialog-buttons">
-            <button onClick={() => handleClose()}>Logout</button>
+            <button className='my-button' onClick={() => handleClose()}>Logout</button>
           </div>
         </div>
       </div>

@@ -106,12 +106,14 @@ function MyAccount() {
   
   return (
     <div>
-        <div><Buttons login={login} logout={logout}/></div>
+      <div>
+        <Buttons login={login} logout={logout} />
+      </div>
 
-        {!loggedIn && <LoginForm onLogin={onLogin} onRegister={onRegister}/> }
-        {loggedIn && <MyAccountAuthContent />}
+      {!loggedIn && <LoginForm onLogin={onLogin} onRegister={onRegister} />}
+      {loggedIn && <MyAccountAuthContent />}
     </div>
-  )
+  );
 }
 
 

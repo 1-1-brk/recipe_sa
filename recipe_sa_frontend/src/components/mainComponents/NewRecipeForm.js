@@ -1,10 +1,13 @@
 import React from 'react'
 import RecipeForm from './RecipeForm'
+import UpdateRecipeForm from './UpdateRecipeForm'
 
 function NewRecipeForm() {
   return (
     <div>
-      <RecipeForm use={'createRecipe'} />
+      <UpdateRecipeForm
+        // use={'createRecipe'}
+      />
     </div>
   )
 }

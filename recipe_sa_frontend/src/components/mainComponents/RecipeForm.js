@@ -193,7 +193,7 @@ export default function RecipeForm(props) {
             ))}
           </select> */}
               <div className="form-floating">
-                <label className="form-select" for="recCat">
+                <label className="form-select" htmlFor="recCat">
                   {selectedCategory ? selectedCategory : "Recipe Category"}
                 </label>
                 <select
@@ -230,7 +230,7 @@ export default function RecipeForm(props) {
                 maxLength="50"
                 required
               />
-              <label for="recName">Recipe Name:</label>
+              <label htmlFor="recName">Recipe Name:</label>
             </div>
             {/* <div>
           <label htmlFor='recName'>Recipe Name:</label>
@@ -254,7 +254,7 @@ export default function RecipeForm(props) {
                 maxLength="400"
                 required
               ></textarea>
-              <label for="recInst">Recipe Instructions:</label>
+              <label htmlFor="recInst">Recipe Instructions:</label>
             </div>
             {/* <div>
           <label htmlFor='recInst'>Recipe Instructions:</label>
@@ -277,7 +277,7 @@ export default function RecipeForm(props) {
                 maxLength="10"
                 required
               ></input>
-              <label for="recName">Recipe Cook Time:</label>
+              <label htmlFor="recName">Recipe Cook Time:</label>
             </div>
             {/* <div>
           <label htmlFor='recTime'>Recipe Cook Time:</label>

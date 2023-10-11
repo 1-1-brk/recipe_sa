@@ -65,6 +65,7 @@ body {
   color: white;
 }
 
+
 .footer {
   min-height: fit-content;
   max-height: fit-content;
@@ -425,7 +426,7 @@ body {
   margin-bottom: 30px;
 }
 
-button, select {
+.my-button, select {
   background: white;
   border: solid 2px black;
   padding: 0.375em 1.125em; /* Corrected the padding values */
@@ -434,8 +435,8 @@ button, select {
   font-size: 1rem;
 }
 
-button:hover,
-button:focus {
+.my-button:hover,
+.my-button:focus {
   box-shadow: 0 4px 8px hsla(190deg, 15%, 5%, 0.2);
   transform: translateY(-4px);
   background: rgb(219, 237, 24);
@@ -480,7 +481,7 @@ button:focus {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-  /* display: flex; */
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 999; /* Higher z-index to appear on top of other elements */

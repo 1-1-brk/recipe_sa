@@ -8,6 +8,7 @@ function ChangeRecipeDialog(props) {
       <div className="" id="ChangeRecipeDialog">
         <UpdateRecipeForm
           handleRecipeSave={props.handleRecipeSave}
+          hideDialog={props.hideDialog}
           recipe={props.recipe}
           use={"updateRecipe"}
         />

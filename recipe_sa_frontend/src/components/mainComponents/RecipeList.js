@@ -102,20 +102,31 @@ class RecipeList extends React.Component {
     // const recipe = this.state.recipes.filter(
     //   (recipe) => recipe.id === recipeId
     // );
-    const index = this.state.recipes.findIndex((recipe) => recipe.id === recipeId);
+    const index = this.state.recipes.findIndex(
+      (recipe) => recipe.id === recipeId
+    );
     const recipe = this.state.recipes[index];
     this.props.setRecipeToUpdate(recipe);
+    // this.setState({ showUpdateDialog: true });
     this.setState({ recipeToUpdate: recipe }, () => {
+
       const changeRecipeDialog = document.getElementById("ChangeRecipeDialog");
       changeRecipeDialog.style.display = "block";
-      console.log("(RecipeList) found the recipeToUpdate ", this.state.recipeToUpdate);
+      console.log(
+        "(RecipeList) found the recipeToUpdate ",
+        this.state.recipeToUpdate
+      );
     });
   }
 
-  handleRecipeUpdate(updatedRecipe){
-    console.log("RecipeList updatedRecipe from UpdateRecipeForm: ", updatedRecipe)
+  handleRecipeUpdate(updatedRecipe) {
+    console.log(
+      "RecipeList updatedRecipe from UpdateRecipeForm: ",
+      updatedRecipe
+    );
+    this.setState({ showUpdateDialog: true }).bind(this);
     this.setState({ recipeToUpdate: updatedRecipe });
-    RecipeService.putExistingRecipe(updatedRecipe)
+    RecipeService.putExistingRecipe(updatedRecipe);
     const { recipes } = this.state;
     const updatedRecipeId = updatedRecipe.id;
 
@@ -134,11 +145,19 @@ class RecipeList extends React.Component {
       // Update the state with the new array of recipes
       this.setState({ recipes: updatedRecipes });
     }
+    // const changeRecipeDialog = document.getElementById("ChangeRecipeDialog");
+    // changeRecipeDialog.style.display = "none";
+    this.props.setRecipeToUpdate((prevState) => null);
+  }
+
+  hideRecipeUpdateDialog() {
+    // this.setState({ showUpdateDialog: false }).bind(this); //, () => {
     const changeRecipeDialog = document.getElementById("ChangeRecipeDialog");
     changeRecipeDialog.style.display = "none";
-    this.props.setRecipeToUpdate((prevState) => null);
 
-  };
+    console.log("hideRecipeUpdateDialog executed");
+    // });
+  }
 
   formatTimeStamp(tS) {
     const date = new Date(tS);
@@ -152,22 +171,23 @@ class RecipeList extends React.Component {
     // );
     const { USER, LOGGED_IN } = this.props;
 
-
     return (
       <>
         <SortBy
           sortOptions={SORT_OPTIONS}
           selectedSortOption={this.state.sortOptionSelected}
           handleChange={this.handleSelectedSortOptionChange}
+          key="sortBy"
         />
 
-        {this.state.recipeToUpdate !== null && (
+        {/* {this.state.recipeToUpdate !== null && ( */}
           <ChangeRecipeDialog
             // props={changeRecipeDialogProps}
             handleRecipeSave={this.handleRecipeUpdate}
+            hideDialog={this.hideRecipeUpdateDialog}
             recipe={this.state.recipeToUpdate}
+            key="changeRecipeDialog"
           />
-        )}
 
         <div>
           {this.state.recipes.map((recipe) => (
@@ -206,7 +226,7 @@ class RecipeList extends React.Component {
                         {this.formatTimeStamp(recipe.created_at)}
                       </small>
                     </p>
-                    {(recipe.updated_at !== recipe.created_at) && (
+                    {recipe.updated_at !== recipe.created_at && (
                       <p className="card-text">
                         <small className="text-muted">
                           edited on {this.formatTimeStamp(recipe.updated_at)}

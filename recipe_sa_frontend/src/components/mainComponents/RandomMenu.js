@@ -69,7 +69,7 @@ function createRecToCatMap(recList){
   return isLoggedIn ? (
     <div className="card-list-container">
       <h3>Here you can choose Random Menu for the day</h3>
-      <button onClick={getRandomMenu}>generate menu suggestion</button>
+      <button className='my-button' onClick={getRandomMenu}>generate menu suggestion</button>
       {selectedMenu !== null && (
         <>
           <div>

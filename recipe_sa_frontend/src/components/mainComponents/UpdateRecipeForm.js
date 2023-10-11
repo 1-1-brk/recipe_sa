@@ -3,6 +3,7 @@ import CategoryService from "../../services/CategoryService";
 import RecipeService from "../../services/RecipeService";
 import { useSelector } from "react-redux";
 import { getUsernameFromJwt } from "../../axios_helper";
+import RecipeList from "./RecipeList";
 
 export default function UpdateRecipeForm(props) {
   // const { recipe } = props;
@@ -27,20 +28,20 @@ export default function UpdateRecipeForm(props) {
   // props.recipe.name
 
   // const [recipeToUpdate, setRecipeToUpdate] = useState();
-  const [recipeInstructions, setRecipeInstructions] = useState();
+  const [recipeInstructions, setRecipeInstructions] = useState("");
   // props && props.recipe && props.recipe.instructions !== undefined
   //   ? props.recipe.instructions
   //   :
   // ""
   // reduxRecipeToUpdate.instructions
   // props.recipe.instructions
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedCategory, setSelectedCategory] = useState("");
   // props && props.recipe && props.recipe.category !== undefined
   //   ? props.recipe.category
   //   :
   // ""
   // reduxRecipeToUpdate.category
-  const [recipeCookTime, setRecipeCookTime] = useState();
+  const [recipeCookTime, setRecipeCookTime] = useState("");
   // props && props.recipe && props.recipe.cook_time !== undefined
   //   ? props.recipe.cook_time
   //   :
@@ -73,12 +74,24 @@ export default function UpdateRecipeForm(props) {
     // const rec = getRecipe();
     // const { recipe } = props
     // console.log("useEffect ran because of props: ", providedRecipe);
-    if (props && props.recipe !== null && recipeToUpdateProps === null){
-    setRecipeName((prevState) => props.recipe.name);
-    setRecipeInstructions(props.recipe.instructions);
-    setSelectedCategory(props.recipe.category);
-    setRecipeCookTime(props.recipe.cook_time);
-    setRecipeToUpdateProps(props.recipe);}
+    if (
+      props &&
+      props.use === "updateRecipe" &&
+      props.recipe &&
+      props.recipe !== null &&
+      recipeToUpdateProps === null
+    ) {
+      // setRecipeName((prevState) => props.recipe.name);
+      // setRecipeInstructions((prevState) => props.recipe.instructions);
+      // setSelectedCategory((prevState) => props.recipe.category);
+      // setRecipeCookTime((prevState) => props.recipe.cook_time);
+      // setRecipeToUpdateProps((prevState) => props.recipe);
+      setRecipeName((prevState) => props.recipe.name ?? "");
+      setRecipeInstructions((prevState) => props.recipe.instructions ?? "");
+      setSelectedCategory((prevState) => props.recipe.category ?? "");
+      setRecipeCookTime((prevState) => props.recipe.cook_time ?? "");
+      setRecipeToUpdateProps((prevState) => props.recipe);
+    }
   }, [props]);
 
   // useEffect(() => {
@@ -110,6 +123,12 @@ export default function UpdateRecipeForm(props) {
     }
   };
 
+  const handleClose = () => {
+    // props.hideDialog()//.bind(RecipeList)
+    const changeRecipeDialog = document.getElementById("ChangeRecipeDialog");
+    changeRecipeDialog.style.display = "none";
+  };
+
   const handleSubmit = async () => {
     console.log("UPDATE_RECIPE_FORM inside handle submit");
     // event.preventDefault();
@@ -124,7 +143,7 @@ export default function UpdateRecipeForm(props) {
     console.log("UPDATE_RECIPE_FORM Submitted: ", dataToSend);
 
     if (props.use === "updateRecipe") {
-      const updatedDataToSend = {...dataToSend, id: recipeToUpdateProps.id}
+      const updatedDataToSend = { ...dataToSend, id: recipeToUpdateProps.id };
       // const success = RecipeService.putExistingRecipe(dataToSend)
       //   props.handleRecipeSave();
       // if (success) {
@@ -134,13 +153,13 @@ export default function UpdateRecipeForm(props) {
       //   setShowMsg("false");
       // }
       try {
-      await RecipeService.putExistingRecipe(updatedDataToSend);
-      props.handleRecipeSave(updatedDataToSend);
-      setShowMsg("success");
-    } catch (error) {
-      console.error("Error updating recipe:", error);
-      setShowMsg("failed");
-    }
+        await RecipeService.putExistingRecipe(updatedDataToSend);
+        props.handleRecipeSave(updatedDataToSend);
+        setShowMsg("success");
+      } catch (error) {
+        console.error("Error updating recipe:", error);
+        setShowMsg("failed");
+      }
     } else {
       // const success = RecipeService.postNewRecipe(dataToSend);
       // if (success) {
@@ -150,13 +169,13 @@ export default function UpdateRecipeForm(props) {
       //   setShowMsg("false");
       // }
       try {
-      await RecipeService.postNewRecipe(dataToSend);
-      setShowMsg("success");
-    } catch (error) {
-      console.error("Error saving a new recipe:", error);
-      setShowMsg("failed");
-    }
-  // }
+        await RecipeService.postNewRecipe(dataToSend);
+        setShowMsg("success");
+      } catch (error) {
+        console.error("Error saving a new recipe:", error);
+        setShowMsg("failed");
+      }
+      // }
     }
   };
 
@@ -209,7 +228,7 @@ export default function UpdateRecipeForm(props) {
               props && props.handleRecipeSave !== undefined
                 ? props.handleRecipeSave
                 : console.log("CLICKED ON SUBMIT FORM")
-                // () => handleSubmit()
+              // () => handleSubmit()
             }
           >
             <div>
@@ -227,8 +246,21 @@ export default function UpdateRecipeForm(props) {
               </option>
             ))}
           </select> */}
+
+              {/* CLOSE BTN */}
+              {props && props.use && props.use === "updateRecipe" && (
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  aria-label="Close"
+                  onClick={() => {
+                    handleClose();
+                  }}
+                ></button>
+              )}
+
               <div className="form-floating">
-                <label className="form-select" for="recCat">
+                <label className="form-select" htmlFor="recCat">
                   {selectedCategory ? selectedCategory : "Recipe Category"}
                 </label>
                 <select
@@ -265,8 +297,8 @@ export default function UpdateRecipeForm(props) {
                 onChange={(e) => setRecipeName(e.target.value)}
                 maxLength="50"
                 required
-              />
-              <label for="recName">Recipe Name:</label>
+              ></input>
+              <label htmlFor="recName">Recipe Name:</label>
             </div>
             {/* <div>
           <label htmlFor='recName'>Recipe Name:</label>
@@ -294,7 +326,7 @@ export default function UpdateRecipeForm(props) {
                 maxLength="400"
                 required
               ></textarea>
-              <label for="recInst">Recipe Instructions:</label>
+              <label htmlFor="recInst">Recipe Instructions:</label>
             </div>
             {/* <div>
           <label htmlFor='recInst'>Recipe Instructions:</label>
@@ -317,7 +349,7 @@ export default function UpdateRecipeForm(props) {
                 maxLength="10"
                 required
               ></input>
-              <label for="recName">Recipe Cook Time:</label>
+              <label htmlFor="recName">Recipe Cook Time:</label>
             </div>
             {/* <div>
           <label htmlFor='recTime'>Recipe Cook Time:</label>
@@ -332,7 +364,7 @@ export default function UpdateRecipeForm(props) {
             required
           />
         </div> */}
-            <button type="submit" onClick={handleSubmit}>
+            <button type="submit" onClick={handleSubmit} className="my-button">
               Submit Recipe
               <img className="tinyIcon" src={SAVE_ICON} alt="" />
             </button>
