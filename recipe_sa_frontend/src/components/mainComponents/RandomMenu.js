@@ -69,13 +69,15 @@ function createRecToCatMap(recList){
   return isLoggedIn ? (
     <div className="card-list-container">
       <h3>Here you can choose Random Menu for the day</h3>
-      <button className='my-button' onClick={getRandomMenu}>generate menu suggestion</button>
+      <button className="my-button" onClick={getRandomMenu}>
+        generate menu suggestion
+      </button>
       {selectedMenu !== null && (
         <>
           <div>
             {selectedMenu.breakfast && (
               <>
-                <div className=" recipe-card">
+                <div className=" random-recipe-card ">
                   <div className="card-body">
                     <h5 className="card-title">
                       breakfast would be: {selectedMenu.breakfast.name}
@@ -94,7 +96,7 @@ function createRecToCatMap(recList){
           <div>
             {selectedMenu.lunch && (
               <>
-                <div className=" recipe-card">
+                <div className=" random-recipe-card">
                   {/* <img src="..." className="card-img-top" alt="..."> */}
                   <div className="card-body">
                     <h5 className="card-title">
@@ -114,7 +116,7 @@ function createRecToCatMap(recList){
           <div>
             {selectedMenu.dessert && (
               <>
-                <div className=" recipe-card">
+                <div className=" random-recipe-card">
                   {/* <img src="..." className="card-img-top" alt="..."> */}
                   <div className="card-body">
                     <h5 className="card-title">
@@ -134,7 +136,7 @@ function createRecToCatMap(recList){
           <div>
             {selectedMenu.dinner && (
               <>
-                <div className=" recipe-card">
+                <div className=" random-recipe-card">
                   {/* <img src="..." className="card-img-top" alt="..."> */}
                   <div className="card-body">
                     <h5 className="card-title">

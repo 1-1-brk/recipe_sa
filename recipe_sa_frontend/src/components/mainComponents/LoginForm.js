@@ -59,7 +59,7 @@ export default class LoginForm extends React.Component{
 
   render (){
     return (
-      <div className="row justify-content-center mt-5">
+      <div className="row justify-content-center mt-5" style={{width: '100vw'}}>
         <div className="col-4">
           <ul
             style={{ border: "solid 2px black", borderRadius: "8px" }}

@@ -12,7 +12,7 @@ import UpdateRecipeForm from "./UpdateRecipeForm";
 class RecipeList extends React.Component {
   ALT_ICON = `${process.env.PUBLIC_URL}ALT_IMG`;
   TRASH_ICON = `${process.env.PUBLIC_URL}websiteImgs/trash_bin.png`;
-  WRITE_ICON = `${process.env.PUBLIC_URL}websiteImgs/writeIcon.png`;
+  WRITE_ICON = `${process.env.PUBLIC_URL}websiteImgs/WriteIcon.png`;
   DISH_PLACEHOLDER = `${process.env.PUBLIC_URL}websiteImgs/covered_plate.png`;
   // USER = useSelector(state => state.auth.user)
   // LOGGED_IN = useSelector(state => state.auth.isLoggedIn)
@@ -172,7 +172,7 @@ class RecipeList extends React.Component {
     const { USER, LOGGED_IN } = this.props;
 
     return (
-      <>
+      <div className="card-list-container">
         <SortBy
           sortOptions={SORT_OPTIONS}
           selectedSortOption={this.state.sortOptionSelected}
@@ -181,13 +181,13 @@ class RecipeList extends React.Component {
         />
 
         {/* {this.state.recipeToUpdate !== null && ( */}
-          <ChangeRecipeDialog
-            // props={changeRecipeDialogProps}
-            handleRecipeSave={this.handleRecipeUpdate}
-            hideDialog={this.hideRecipeUpdateDialog}
-            recipe={this.state.recipeToUpdate}
-            key="changeRecipeDialog"
-          />
+        <ChangeRecipeDialog
+          // props={changeRecipeDialogProps}
+          handleRecipeSave={this.handleRecipeUpdate}
+          hideDialog={this.hideRecipeUpdateDialog}
+          recipe={this.state.recipeToUpdate}
+          key="changeRecipeDialog"
+        />
 
         <div>
           {this.state.recipes.map((recipe) => (
@@ -195,7 +195,7 @@ class RecipeList extends React.Component {
               <div className="recipe-card row" key={recipe.id}>
                 <div className="row ">
                   <div
-                    className="col justify-content-center display-content-center"
+                    className="col-3 justify-content-center display-content-center"
                     style={{
                       display: "flex",
                       justifyContent: "center",
@@ -203,18 +203,60 @@ class RecipeList extends React.Component {
                     }}
                   >
                     <img
-                      className="img-fluid rounded-start"
+                      // className="img-fluid rounded-start"
                       src={this.dishPlaceholder}
                       alt=""
-                      style={{ height: "150px", width: "150px" }}
+                      style={{ maxHeight: "20vh", maxWidth: "20vw" }}
                     />
                   </div>
                   <div
                     className="col justify-content-center display-content-center"
                     key={recipe.id}
                   >
-                    <span className="card-body col">
-                      <h4 className="card-title col">{recipe.name}</h4>
+                    <span
+                      className="card-body col"
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <h4
+                        className="card-title col"
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        {recipe.name}
+                      </h4>
+                      {this.props.use === "private" && (
+                        <>
+                          <img
+                            src={this.TRASH_ICON}
+                            alt={this.ALT_ICON}
+                            className=" tinyIcon tinyIcon-animation"
+                            name={recipe.id}
+                            title="Delete"
+                            // style={{ height: "35px", width: "45px" }}
+                            onClick={() => this.handleRecipeDelete(recipe.id)}
+                          />
+                          <img
+                            src={this.WRITE_ICON}
+                            alt={this.ALT_ICON}
+                            className=" tinyIcon tinyIcon-animation"
+                            name={recipe.id}
+                            title="Edit"
+                            // style={{ height: "35px", width: "45px" }}
+                            onClick={() =>
+                              this.showRecipeUpdateDialog(recipe.id)
+                            }
+                          />
+                        </>
+                      )}
                     </span>
                     <p className="card-text">{recipe.instructions}</p>
                     <p className="card-text">
@@ -234,14 +276,18 @@ class RecipeList extends React.Component {
                       </p>
                     )}
                   </div>
-                  <div className="col-1" style={{}}>
-                    {this.props.use === "private" && (
+                  {/* <div
+                    className="col justify-content-center display-content-center"
+                    // style={{ alignItems: "center", alignContent: "center" }}
+                  > */}
+                  {/* {(this.props.use === "private") && (
                       <>
                         <img
                           src={this.TRASH_ICON}
                           alt={this.ALT_ICON}
                           className="col-4 tinyIcon tinyIcon-animation"
                           name={recipe.id}
+                          title="Delete"
                           style={{ height: "35px", width: "45px" }}
                           onClick={() => this.handleRecipeDelete(recipe.id)}
                         />
@@ -250,18 +296,19 @@ class RecipeList extends React.Component {
                           alt={this.ALT_ICON}
                           className="col-4 tinyIcon tinyIcon-animation"
                           name={recipe.id}
+                          title="Edit"
                           style={{ height: "35px", width: "45px" }}
                           onClick={() => this.showRecipeUpdateDialog(recipe.id)}
                         />
                       </>
-                    )}
-                  </div>
+                    )} */}
+                  {/* </div> */}
                 </div>
               </div>
             </>
           ))}
         </div>
-      </>
+      </div>
     );
   }
 }

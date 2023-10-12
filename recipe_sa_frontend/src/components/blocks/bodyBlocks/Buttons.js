@@ -93,7 +93,7 @@ function Buttons(props) {
           ></button>
         </div>
       )}
-      <div style={{ margin: "10 px", marginLeft: "70em" }}>
+      <div style={{ margin: "10 px", marginLeft: "70vw" }}>
         {isLoggedIn === true && (
           <button onClick={props.logout} className="my-button">
             Logout

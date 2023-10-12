@@ -105,7 +105,7 @@ function MyAccount() {
 
   
   return (
-    <div>
+    <div className='my-account-content'>
       <div>
         <Buttons login={login} logout={logout} />
       </div>

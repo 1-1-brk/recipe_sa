@@ -3,7 +3,7 @@ import RecipeList from "./RecipeList";
 
 function PublicRecipeList() {
   return (
-    <div className="card-list-container">
+    <div className="public-recipe-list">
       <RecipeList use={"public"} />
     </div>
   );

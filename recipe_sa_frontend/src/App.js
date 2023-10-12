@@ -15,7 +15,7 @@ import PublicRecipeList from './components/mainComponents/PublicRecipeList';
 
 function App() {
   return (
-      <>
+      <div>
       <Router>
 
       <Header />
@@ -33,7 +33,7 @@ function App() {
       }/>
       <Footer />
       </Router>
-      </>
+      </div>
     );
   }
   

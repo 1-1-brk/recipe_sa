@@ -103,7 +103,7 @@ import RecipeList from './RecipeList';
     // }
      
      return (
-       <div className="card-list-container">
+       <div className="">
          <RecipeList use={"private"} />
        </div>
        // <div>

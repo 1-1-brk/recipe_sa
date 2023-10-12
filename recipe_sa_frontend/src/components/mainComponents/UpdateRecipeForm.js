@@ -78,8 +78,8 @@ export default function UpdateRecipeForm(props) {
       props &&
       props.use === "updateRecipe" &&
       props.recipe &&
-      props.recipe !== null &&
-      recipeToUpdateProps === null
+      props.recipe !== null
+      // recipeToUpdateProps === null
     ) {
       // setRecipeName((prevState) => props.recipe.name);
       // setRecipeInstructions((prevState) => props.recipe.instructions);

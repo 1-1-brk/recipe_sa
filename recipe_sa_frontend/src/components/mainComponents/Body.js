@@ -13,7 +13,7 @@ function Body(props) {
 
   return (
     <div
-      className=""
+      className="body"
       // style={{ padding: 30 }}
     >
       <AlertDialog />
